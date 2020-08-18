@@ -1,11 +1,8 @@
 <template>
-  <div class="index">
-    <p>index</p>
-  </div>
+  <div>text</div>
 </template>
 
 <script>
-
 export default {
   name: 'Index'
 }

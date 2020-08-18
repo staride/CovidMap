@@ -1,9 +1,85 @@
 <template>
- <router-view/>
+ <div id="main-view-div">
+  <div id="header" :style="headerViewStyle">
+    <main-header :headerHeight="headerHeight"/>
+  </div>
+  <div id="contents" :style="contentsViewStyle">
+    <div id="router-view-div" :style="routerViewStyle">
+      <router-view/>
+    </div>
+  </div>
+  <div id="footer" :style="footerViewStyle">
+    <main-footer :footerHeight="footerHeight"/>
+  </div>
+ </div>
 </template>
 
 <script>
+import MainHeader from '@/views/main/Header.vue'
+import MainFooter from '@/views/main/Footer.vue'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    MainHeader,
+    MainFooter
+  },
+  data: function () {
+    return {
+      headerHeight: 120,
+      footerHeight: 70,
+      defaultPadding: 40,
+      headerViewStyle: {
+        height: '120px'
+      },
+      footerViewStyle: {
+        height: '70px'
+      },
+      contentsViewStyle: {},
+      routerViewStyle: {}
+    }
+  },
+  computed: {
+    getContentsStyle () {
+      return window.innerHeight - this.headerHeight - this.footerHeight
+    },
+    getRouterViewWidth () {
+      return window.innerWidth - (this.defaultPadding * 2)
+    },
+    getRouterViewHeight () {
+      return this.getContentsStyle - (this.defaultPadding * 2)
+    }
+  },
+  methods: {
+    onResize: function () {
+      this.contentsViewStyle = {
+        height: this.getContentsStyle + 'px',
+        padding: this.defaultPadding + 'px'
+      }
+
+      this.routerViewStyle = {
+        border: 'solid 1px gray',
+        width: this.getRouterViewWidth + 'px',
+        height: this.getRouterViewHeight + 'px'
+      }
+
+      console.log('contentsViewStyle height : ' + this.contentsViewStyle.height)
+      console.log('routerViewStyle width : ' + this.routerViewStyle.width)
+      console.log('routerViewStyle height : ' + this.routerViewStyle.height)
+    }
+  },
+  // resize 이벤트 등록
+  mounted: function () {
+    // console.log('contentsStyle height : ' + this.contentsStyle.height)
+
+    this.$nextTick(() => {
+      this.onResize()
+      window.addEventListener('resize', this.onResize)
+    })
+  },
+  // resize 이벤트 해제
+  beforeDestroy: function () {
+    window.removeEventListener('resize', this.onResize)
+  }
 }
 </script>

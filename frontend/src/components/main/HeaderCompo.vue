@@ -1,0 +1,44 @@
+<template>
+  <v-app-bar app v-bind:height="headerHeight" flat dark>
+    <div class="header-div-logo">
+      <v-img contain="containLogo" max-width="200px" max-height="100px" height="100px" src="../../assets/logo.png" position="left center"/>
+    </div>
+    <div class="header-div-title">
+      <v-toolbar-title position="center center">App Title</v-toolbar-title>
+    </div>
+    <div class="header-div-items">
+      <slot name="headerItems"></slot>
+    </div>
+  </v-app-bar>
+</template>
+<script>
+export default {
+  name: 'HeaderCompo',
+  data: function () {
+    return {
+      containLogo: true
+    }
+  },
+  props: {
+    headerHeight: {
+      type: Number,
+      required: true,
+      default: 120
+    }
+  },
+  computed: {
+  }
+}
+</script>
+<style scope>
+  .header-div-logo {
+    width: 300px;
+  }
+  .header-div-title {
+    text-align: center;
+    width: 1150px;
+  }
+  .header-div-items {
+    width: auto;
+  }
+</style>
