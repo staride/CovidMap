@@ -1,4 +1,4 @@
-package com.project.covod19;
+package com.project.covid19;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

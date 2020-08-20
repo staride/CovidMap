@@ -1,4 +1,4 @@
-package com.project.covod19.config;
+package com.project.covid19.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ public class DBConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl(
-                "jdbc:mysql://localhost:3306/testdb?serverTimezone=Asia/Seoul&useSSL=false"
+                "jdbc:mysql://localhost:3306/covid19?serverTimezone=Asia/Seoul&useSSL=false"
         );
         dataSource.setUsername("bitai");
         dataSource.setPassword("456123");

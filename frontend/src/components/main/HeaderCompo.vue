@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app v-bind:height="headerHeight" flat dark>
     <div class="header-div-logo">
-      <v-img contain="containLogo" max-width="200px" max-height="100px" height="100px" src="../../assets/logo.png" position="left center"/>
+      <v-img :contain="true" max-width="200px" max-height="100px" height="100px" src="@/assets/logo.png" position="left center"/>
     </div>
     <div class="header-div-title">
       <v-toolbar-title position="center center">App Title</v-toolbar-title>
@@ -14,11 +14,6 @@
 <script>
 export default {
   name: 'HeaderCompo',
-  data: function () {
-    return {
-      containLogo: true
-    }
-  },
   props: {
     headerHeight: {
       type: Number,
@@ -36,7 +31,7 @@ export default {
   }
   .header-div-title {
     text-align: center;
-    width: 1150px;
+    width: 1250px;
   }
   .header-div-items {
     width: auto;

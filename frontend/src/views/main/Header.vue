@@ -3,7 +3,8 @@
     <template #headerItems>
      <v-btn @click="goMainView()" text color="white" class="header-item">COVID Map</v-btn>
      <v-btn @click="goBoardView()" text color="white" class="header-item">Board</v-btn>
-     <v-btn @click="SignIn()" text color="white" class="header-item">Sign in</v-btn>
+     <v-btn v-if="!isLogin" @click="goSignIn()" text color="white" class="header-item">Sign in</v-btn>
+     <v-btn v-if="isLogin" @click="logout()" text color="white" class="header-item">Logout</v-btn>
     </template>
   </main-header>
 </template>
@@ -11,11 +12,17 @@
 
 import MainHeader from '@/components/main/HeaderCompo.vue'
 import router from '@/router'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'HeaderView',
   components: {
     MainHeader
+  },
+  computed: {
+    ...mapGetters([
+      'isLogin'
+    ])
   },
   props: {
     headerHeight: {
@@ -25,6 +32,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'logoutAction'
+    ]),
     goMainView () {
       console.log('goMainView')
       if (window.location.pathname !== '/') {
@@ -34,21 +44,19 @@ export default {
     goBoardView () {
       console.log('goBoardView')
       if (window.location.pathname !== '/board') {
-        router.push('/board')
+        router.push({ name: 'BoardMain' })
       }
     },
-    SignIn () {
+    goSignIn () {
       console.log('signIn')
       if (window.location.pathname !== '/signIn') {
-        router.push('/signIn')
+        router.push({ name: 'SignIn' })
       }
+    },
+    logout () {
+      console.log('logout')
+      this.logoutAction()
     }
   }
 }
 </script>
-<style scope>
-  .v-btn__content {
-    height: 120px;
-    width: 90px;
-  }
-</style>

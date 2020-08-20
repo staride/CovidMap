@@ -1,5 +1,5 @@
 <template>
- <div id="main-view-div">
+<v-app>
   <div id="header" :style="headerViewStyle">
     <main-header :headerHeight="headerHeight"/>
   </div>
@@ -11,7 +11,7 @@
   <div id="footer" :style="footerViewStyle">
     <main-footer :footerHeight="footerHeight"/>
   </div>
- </div>
+</v-app>
 </template>
 
 <script>
@@ -63,15 +63,14 @@ export default {
         height: this.getRouterViewHeight + 'px'
       }
 
-      console.log('contentsViewStyle height : ' + this.contentsViewStyle.height)
-      console.log('routerViewStyle width : ' + this.routerViewStyle.width)
-      console.log('routerViewStyle height : ' + this.routerViewStyle.height)
+      // console.log('contentsViewStyle height : ' + this.contentsViewStyle.height)
+      // console.log('routerViewStyle width : ' + this.routerViewStyle.width)
+      // console.log('routerViewStyle height : ' + this.routerViewStyle.height)
     }
   },
   // resize 이벤트 등록
   mounted: function () {
     // console.log('contentsStyle height : ' + this.contentsStyle.height)
-
     this.$nextTick(() => {
       this.onResize()
       window.addEventListener('resize', this.onResize)

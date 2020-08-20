@@ -1,4 +1,4 @@
-package com.project.covod19;
+package com.project.covid19;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
