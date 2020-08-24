@@ -11,7 +11,7 @@
             </v-toolbar>
             <v-card-text>
               <v-form>
-                <v-text-field label="id" v-model="info.id" :rules="idRules" :hint="idHint" persistent-hint="true" @keyup="checkId" prepend-icon="mdi-account" type="text" :autofocus="true"></v-text-field>
+                <v-text-field label="id" v-model="info.id" :rules="idRules" :hint="idHint" :persistent-hint="true" @keyup="checkId" prepend-icon="mdi-account" type="text" :autofocus="true"></v-text-field>
                 <v-text-field label="password" v-model="info.password" :rules="passwordRules" prepend-icon="mdi-lock" type="password"></v-text-field>
                 <v-text-field label="nickName" v-model="info.nickName" :rules="nickNameRules" prepend-icon="mdi-contacts" type="text"></v-text-field>
                 <v-text-field label="phone" v-model="info.phone" :rules="phoneRules" prepend-icon="mdi-phone" type="text"></v-text-field>

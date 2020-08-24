@@ -38,4 +38,15 @@ public class Util {
         body = stringBuilder.toString();
         return body;
     }
+
+    public static boolean isEmptyString(String value){
+
+        boolean result = false;
+
+        if(value == null || value.trim().equals("")){
+            result = true;
+        }
+
+        return result;
+    }
 }

@@ -1,6 +1,6 @@
 package com.project.covid19.controller;
 
-import com.project.covid19.Entity.Member;
+import com.project.covid19.entity.Member;
 import com.project.covid19.Util.ValidatedUtil;
 import com.project.covid19.service.MemberService;
 import lombok.extern.java.Log;
@@ -65,5 +65,21 @@ public class MemberController {
 
         message = "Fail";
         return new ResponseEntity<String>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/getLoginInfo/{id}")
+    public ResponseEntity<Member> getLoginInfo(@PathVariable String id){
+
+        log.info("getLoginInfo() : id - " + id);
+
+        Member member = null;
+        member = service.getLoginInfo(id);
+
+        if(member != null){
+            member.setPassword("");
+            return new ResponseEntity<Member>(member, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<Member>(member, HttpStatus.BAD_REQUEST);
     }
 }

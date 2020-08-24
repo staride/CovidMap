@@ -18,7 +18,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn dark @click="signInAction(info)">Login</v-btn>
-              <v-btn dark @click="signUp" style="margin-left: 10px;">Sign up</v-btn>
+              <v-btn dark @click="moveSignUp" style="margin-left: 10px;">Sign up</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -44,7 +44,7 @@ export default {
     ...mapActions([
       'signInAction'
     ]),
-    signUp: function () {
+    moveSignUp: function () {
       // console.log('signUp signUp')
       router.push({ name: 'SignUp' })
     }

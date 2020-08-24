@@ -3,8 +3,8 @@
     <template #headerItems>
      <v-btn @click="goMainView()" text color="white" class="header-item">COVID Map</v-btn>
      <v-btn @click="goBoardView()" text color="white" class="header-item">Board</v-btn>
-     <v-btn v-if="!isLogin" @click="goSignIn()" text color="white" class="header-item">Sign in</v-btn>
-     <v-btn v-if="isLogin" @click="logout()" text color="white" class="header-item">Logout</v-btn>
+     <v-btn v-if="!getIsLogin" @click="goSignIn()" text color="white" class="header-item">Sign in</v-btn>
+     <v-btn v-if="getIsLogin" @click="logout()" text color="white" class="header-item">Logout</v-btn>
     </template>
   </main-header>
 </template>
@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'isLogin'
+      'getIsLogin'
     ])
   },
   props: {

@@ -1,7 +1,11 @@
 import axios from 'axios'
 import {
   SET_AUTH_TOKEN,
-  DESTROY_AUTH_TOKEN
+  DESTROY_AUTH_TOKEN,
+  SET_LOGIN_INFO,
+  DESTROY_LOGIN_INFO,
+  SET_BOARD_LIST,
+  SET_BOARD
 } from '@/store/mutation-types.js'
 
 import router from '@/router'
@@ -18,15 +22,48 @@ export default {
         // console.log('accessToken : ' + accessToken)
 
         commit(SET_AUTH_TOKEN, accessToken)
-        router.go(-1)
+        axios.get(`http://localhost:7777/member/getLoginInfo/${data.id}`).then(res => {
+          if (res.status === 200 && res.data !== null) {
+            commit(SET_LOGIN_INFO, res.data)
+            alert('로그인 성공')
+            router.go(-1)
+          } else {
+            console.log('status : ' + res.status + ', data : ' + res.data)
+            alert('로그인 실패')
+          }
+        }).catch(err => {
+          console.log(err)
+          alert('로그인 실패')
+        })
+      } else {
+        console.log('status : ' + res.status + ', data : ' + res.data)
+        alert('로그인 실패')
+      }
+    }).catch(err => {
+      console.log(err)
+      alert('로그인 실패')
+    })
+  },
+  logoutAction: function ({ commit }) {
+    commit(DESTROY_AUTH_TOKEN)
+    commit(DESTROY_LOGIN_INFO)
+  },
+  getBoardListAction: function ({ commit }) {
+    axios.get('http://localhost:7777/board').then(res => {
+      commit(SET_BOARD_LIST, res.data)
+    }).catch(err => {
+      console.log(err)
+    })
+  },
+  getBoardAction: function ({ commit }, boardNo) {
+    axios.get(`http://localhost:7777/board/${boardNo}`).then(res => {
+      if (res.status === 200) {
+        commit(SET_BOARD, res.data)
       } else {
         console.log('status : ' + res.status + ', data : ' + res.data)
       }
     }).catch(err => {
       console.log(err)
     })
-  },
-  logoutAction: function ({ commit }) {
-    commit(DESTROY_AUTH_TOKEN)
   }
 }

@@ -1,18 +1,18 @@
 package com.project.covid19.Util;
 
-import com.project.covid19.Entity.Member;
-import org.springframework.validation.annotation.Validated;
+import com.project.covid19.entity.Board;
+import com.project.covid19.entity.Member;
 
 public class ValidatedUtil {
 
     public static boolean validateRegisterMemberInfo(Member member){
         boolean result = false;
 
-        if(!ValidatedUtil.isEmptyString(member.getId()) &&
-           !ValidatedUtil.isEmptyString(member.getPassword()) &&
-           !ValidatedUtil.isEmptyString(member.getNickName()) &&
-           !ValidatedUtil.isEmptyString(member.getPhone()) &&
-           !ValidatedUtil.isEmptyString(member.getEmail())){
+        if(member != null && !Util.isEmptyString(member.getId()) &&
+           !Util.isEmptyString(member.getPassword()) &&
+           !Util.isEmptyString(member.getNickName()) &&
+           !Util.isEmptyString(member.getPhone()) &&
+           !Util.isEmptyString(member.getEmail())){
 
             result = true;
         }
@@ -20,11 +20,13 @@ public class ValidatedUtil {
         return result;
     }
 
-    public static boolean isEmptyString(String value){
-
+    public static boolean validateRegisterBoardInfo(Board board){
         boolean result = false;
 
-        if(value == null || value.trim().equals("")){
+        if(board != null && !Util.isEmptyString(board.getTitle()) &&
+           !Util.isEmptyString(board.getContents()) &&
+           !Util.isEmptyString(board.getWriter())){
+
             result = true;
         }
 

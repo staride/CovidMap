@@ -19,5 +19,14 @@ export default {
     v => (v.trim() !== '') || '이메일을 작성해 주세요.',
     v => /.+@.+\..+/.test(v) || '이메일 형식으로 작성해주세요.'
   ],
-  isLogin: false
+  titleRule: [
+    v => !!v || '글 제목을 작성해 주세요.'
+  ],
+  contentsRule: [
+    v => !!v || '글 내용을 작성해 주세요.'
+  ],
+  isLogin: false,
+  loginInfo: null,
+  boardList: [],
+  board: null
 }

@@ -1,13 +1,12 @@
 package com.project.covid19.security.custom;
 
-import com.project.covid19.Entity.Member;
+import com.project.covid19.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class CustomUser extends User {
     private Member member;

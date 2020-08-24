@@ -1,2 +1,8 @@
 export const SET_AUTH_TOKEN = 'SET_AUTH_TOKEN'
 export const DESTROY_AUTH_TOKEN = 'DESTROY_AUTH_TOKEN'
+
+export const SET_LOGIN_INFO = 'SET_LOGIN_INFO'
+export const DESTROY_LOGIN_INFO = 'DESTROY_LOGIN_INFO'
+
+export const SET_BOARD_LIST = 'SET_BOARD_LIST'
+export const SET_BOARD = 'SET_BOARD'

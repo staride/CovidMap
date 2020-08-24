@@ -1,6 +1,6 @@
 package com.project.covid19.security.custom;
 
-import com.project.covid19.Entity.Member;
+import com.project.covid19.entity.Member;
 import com.project.covid19.repository.MemberRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;

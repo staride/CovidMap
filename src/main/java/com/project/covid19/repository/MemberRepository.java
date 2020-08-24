@@ -1,6 +1,6 @@
 package com.project.covid19.repository;
 
-import com.project.covid19.Entity.Member;
+import com.project.covid19.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

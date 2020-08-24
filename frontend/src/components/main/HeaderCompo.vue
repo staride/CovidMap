@@ -31,7 +31,7 @@ export default {
   }
   .header-div-title {
     text-align: center;
-    width: 1250px;
+    width: 1200px;
   }
   .header-div-items {
     width: auto;

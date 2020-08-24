@@ -1,4 +1,4 @@
-package com.project.covid19.Entity;
+package com.project.covid19.entity;
 
 import lombok.*;
 import javax.persistence.*;
@@ -33,9 +33,9 @@ public class Member {
     @Column(length = 50, nullable = false)
     private String email;
 
-    @Column(length = 20, nullable = true)
+    @Column(length = 20, nullable = true, name = "location_X")
     private String locationX;
 
-    @Column(length = 20, nullable = true)
+    @Column(length = 20, nullable = true, name = "location_Y")
     private String locationY;
 }
