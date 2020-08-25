@@ -8,7 +8,22 @@ export default {
   getBoardList (state) {
     return state.boardList
   },
-  getBoard (state) {
-    return state.board
+  getBoardTitle (state) {
+    if (state.board === null) {
+      return ''
+    }
+    return state.board.title
+  },
+  getBoardContent (state) {
+    if (state.board === null) {
+      return ''
+    }
+    return state.board.title
+  },
+  getSameUser (state) {
+    if (state.board === null || state.loginInfo === null) {
+      return false
+    }
+    return state.board.writer === state.loginInfo.nickName
   }
 }

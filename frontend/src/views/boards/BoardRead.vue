@@ -11,14 +11,14 @@
             </v-toolbar>
           </v-card>
           <v-card-text>
-            <v-text-field label="title" v-model="getBoard.title" prepend-icon="mdi-lock" type="text" :disabled="isDisabled"></v-text-field>
-            <v-textarea height="300" v-model="getBoard.contents" label="contents" prepend-icon="mdi-lock" type="text" :disabled="isDisabled"></v-textarea>
+            <v-text-field label="title" v-model="getBoardTitle" prepend-icon="mdi-lock" type="text" :disabled="isDisabled"></v-text-field>
+            <v-textarea height="300" v-model="getBoardContent" label="contents" prepend-icon="mdi-lock" type="text" :disabled="isDisabled"></v-textarea>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn dark v-if="isDisabled" @click="setModify">수정</v-btn>
-            <v-btn dark v-if="!isDisabled" @click="modifyBoard()">수정 완료</v-btn>
-            <v-btn dark v-if="isDisabled" @click="removeBoard()">삭제</v-btn>
+            <v-btn dark v-if="(isDisabled && getSameUser)" @click="setModify">수정</v-btn>
+            <v-btn dark v-if="(!isDisabled && getSameUser)" @click="modifyBoard()">수정 완료</v-btn>
+            <v-btn dark v-if="(isDisabled && getSameUser)" @click="removeBoard()">삭제</v-btn>
             <v-btn dark @click="moveBack">취소</v-btn>
           </v-card-actions>
         </v-col>
@@ -39,11 +39,16 @@ export default {
     }
   },
   props: {
-    boardNo: String
+    boardNo: {
+      type: String,
+      required: true
+    }
   },
   computed: {
     ...mapGetters([
-      'getBoard'
+      'getSameUser',
+      'getBoardTitle',
+      'getBoardContent'
     ])
   },
   methods: {

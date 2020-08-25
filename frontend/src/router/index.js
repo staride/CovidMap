@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 
 import Index from '@/views/Index.vue'
 
@@ -36,7 +37,27 @@ const routes = [
   {
     path: '/board/write',
     name: 'BoardWrite',
-    component: BoardWrite
+    component: BoardWrite,
+    beforeEnter (to, from, next) {
+      var loginInfo = store.getters.getLoginInfo
+      var isLogin = store.getters.getIsLogin
+      if (loginInfo !== null && isLogin) {
+        next()
+      } else {
+        alert('Login이 필요한 기능입니다.')
+        next({ name: 'SignIn' })
+      }
+    },
+    beforeRouteLeave (to, from, next) {
+      var loginInfo = store.getters.getLoginInfo
+      var isLogin = store.getters.getIsLogin
+      if (loginInfo !== null && isLogin) {
+        next()
+      } else {
+        alert('Login이 필요한 기능입니다.')
+        next({ name: 'SignIn' })
+      }
+    }
   },
   {
     path: '/board/view/:boardNo',

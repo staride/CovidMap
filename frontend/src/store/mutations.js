@@ -34,5 +34,4 @@ export default {
   [SET_BOARD] (state, data) {
     state.board = data
   }
-
 }
