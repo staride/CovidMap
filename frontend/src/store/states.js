@@ -1,5 +1,4 @@
 export default {
-
   idRules: [
     v => !!v || 'id를 입력해 주세요'
   ],
@@ -28,5 +27,9 @@ export default {
   isLogin: false,
   loginInfo: null,
   boardList: [],
-  board: null
+  board: null,
+  map: null,
+  markers: [],
+  circle: null,
+  centerMarker: null
 }

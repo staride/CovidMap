@@ -11,9 +11,15 @@ Vue.use(vuex)
 
 Vue.config.productionTip = false
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+function init () {
+  return Promise.resolve()
+}
+
+init().then(() => {
+  new Vue({
+    router,
+    store,
+    vuetify,
+    render: h => h(App)
+  }).$mount('#app')
+})

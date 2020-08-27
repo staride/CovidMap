@@ -4,7 +4,11 @@ import {
   SET_LOGIN_INFO,
   DESTROY_LOGIN_INFO,
   SET_BOARD_LIST,
-  SET_BOARD
+  SET_BOARD,
+  SET_MAP,
+  SET_CENTER_MARKER,
+  SET_MARKERS,
+  SET_CIRCLE
 } from '@/store/mutation-types.js'
 
 import axios from 'axios'
@@ -33,5 +37,17 @@ export default {
   },
   [SET_BOARD] (state, data) {
     state.board = data
+  },
+  [SET_MAP] (state, map) {
+    state.map = map
+  },
+  [SET_CENTER_MARKER] (state, marker) {
+    state.centerMarker = marker
+  },
+  [SET_MARKERS] (state, markers) {
+    state.markers = markers
+  },
+  [SET_CIRCLE] (state, circle) {
+    state.circle = circle
   }
 }

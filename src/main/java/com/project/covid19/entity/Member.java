@@ -33,9 +33,9 @@ public class Member {
     @Column(length = 50, nullable = false)
     private String email;
 
-    @Column(length = 20, nullable = true, name = "location_X")
-    private String locationX;
+    @Column(length = 20, nullable = true, name = "position_X")
+    private String positionX;
 
-    @Column(length = 20, nullable = true, name = "location_Y")
-    private String locationY;
+    @Column(length = 20, nullable = true, name = "position_y")
+    private String positionY;
 }

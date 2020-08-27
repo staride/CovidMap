@@ -6,3 +6,13 @@ export const DESTROY_LOGIN_INFO = 'DESTROY_LOGIN_INFO'
 
 export const SET_BOARD_LIST = 'SET_BOARD_LIST'
 export const SET_BOARD = 'SET_BOARD'
+
+export const SET_MAP = 'SET_MAP'
+export const SET_CENTER_MARKER = 'SET_CENTER_MARKER'
+export const SET_MARKERS = 'SET_MARKERS'
+export const SET_CIRCLE = 'SET_CIRCLE'
+
+export const DESTROY_MAP = 'SET_MAP'
+export const DESTROY_CENTER_MARKER = 'SET_CENTER_MARKER'
+export const DESTROY_MARKERS = 'SET_MARKERS'
+export const DESTROY_CIRCLE = 'SET_CIRCLE'
