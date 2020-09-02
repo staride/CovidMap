@@ -1,6 +1,7 @@
 package com.project.covid19.constants;
 
 public class CrawTypeConstants {
+
     public static final String TYPE_JONGNO = "종로구";
     public static final String TYPE_JUNG = "중구";
     public static final String TYPE_YONGSAN = "용산구";

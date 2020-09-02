@@ -1,12 +1,27 @@
 package com.project.covid19.Util;
 
 import com.project.covid19.constants.CrawTypeConstants;
-import com.project.covid19.constants.CrawUrlConstants;
-import com.project.covid19.crawler.*;
+import com.project.covid19.constants.CrawlingConstants;
+import com.project.covid19.entity.Marker;
+import com.project.covid19.generator.*;
+import com.project.covid19.entity.CrawlingBoard;
+import com.project.covid19.generator.abstractClass.MarkerGenerator;
 import lombok.extern.java.Log;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Log
 public class CrawlingUtil {
@@ -16,16 +31,16 @@ public class CrawlingUtil {
         Document document = null;
 
         try {
-//            Connection.Response homepage = Jsoup.connect(url).timeout(1000 * 60 * 60).method(Connection.Method.GET)
-//                    .userAgent("Mozila/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 " +
-//                            "Firefox/10.0 AppleWebKit/537.36 (KHTML, like Gecko) " +
-//                            "Chrome/51.0.2704.103 Safari/537.36")
-//                    .execute();
+            Connection.Response homepage = Jsoup.connect(url).timeout(1000 * 60 * 60).method(Connection.Method.GET)
+                    .userAgent("Mozila/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 " +
+                            "Firefox/10.0 AppleWebKit/537.36 (KHTML, like Gecko) " +
+                            "Chrome/51.0.2704.103 Safari/537.36")
+                    .execute();
 
 
 
-            // document = homepage.parse();
-            document = Jsoup.connect(url).timeout(1000 * 60 * 60).get();
+             document = homepage.parse();
+//            document = Jsoup.connect(url).timeout(1000 * 60 * 60).get();
         } catch (Exception e) {
             log.info(e.getMessage());
         }
@@ -33,75 +48,193 @@ public class CrawlingUtil {
         return document;
     }
 
-    public static String[] getUrl(String type){
+    public static MarkerGenerator getMarkerGenerator(String type){
 
-        String[] urls = null;
-
-        switch(type){
-            case CrawTypeConstants.TYPE_JONGNO : urls = CrawUrlConstants.TYPE_JONGNO; break;
-            case CrawTypeConstants.TYPE_JUNG : urls = CrawUrlConstants.TYPE_JUNG; break;
-            case CrawTypeConstants.TYPE_YONGSAN : urls = CrawUrlConstants.TYPE_YONGSAN; break;
-            case CrawTypeConstants.TYPE_SEONGDONG : urls = CrawUrlConstants.TYPE_SEONGDONG; break;
-            case CrawTypeConstants.TYPE_GWANGJIN : urls = CrawUrlConstants.TYPE_GWANGJIN; break;
-            case CrawTypeConstants.TYPE_DONGDAEMUN : urls = CrawUrlConstants.TYPE_DONGDAEMUN; break;
-            case CrawTypeConstants.TYPE_JUNGNANG : urls = CrawUrlConstants.TYPE_JUNGNANG; break;
-            case CrawTypeConstants.TYPE_SEONGBUK : urls = CrawUrlConstants.TYPE_SEONGBUK; break;
-            case CrawTypeConstants.TYPE_GANGBUK : urls = CrawUrlConstants.TYPE_GANGBUK; break;
-            case CrawTypeConstants.TYPE_DOBONG : urls = CrawUrlConstants.TYPE_DOBONG; break;
-            case CrawTypeConstants.TYPE_NOWON : urls = CrawUrlConstants.TYPE_NOWON; break;
-            case CrawTypeConstants.TYPE_EUNPYEONG : urls = CrawUrlConstants.TYPE_EUNPYEONG; break;
-            case CrawTypeConstants.TYPE_SEODAEMUN : urls = CrawUrlConstants.TYPE_SEODAEMUN; break;
-            case CrawTypeConstants.TYPE_MAPO : urls = CrawUrlConstants.TYPE_MAPO; break;
-            case CrawTypeConstants.TYPE_YANGCHEON : urls = CrawUrlConstants.TYPE_YANGCHEON; break;
-            case CrawTypeConstants.TYPE_GANGSEO : urls = CrawUrlConstants.TYPE_GANGSEO; break;
-            case CrawTypeConstants.TYPE_GURO : urls = CrawUrlConstants.TYPE_GURO; break;
-            case CrawTypeConstants.TYPE_GEUMCHEON : urls = CrawUrlConstants.TYPE_GEUMCHEON; break;
-            case CrawTypeConstants.TYPE_YEONGDEUNGPO : urls = CrawUrlConstants.TYPE_YEONGDEUNGPO; break;
-            case CrawTypeConstants.TYPE_DONGJAK : urls = CrawUrlConstants.TYPE_DONGJAK; break;
-            case CrawTypeConstants.TYPE_GWANAK : urls = CrawUrlConstants.TYPE_GWANAK; break;
-            case CrawTypeConstants.TYPE_SEOCHO : urls = CrawUrlConstants.TYPE_SEOCHO; break;
-            case CrawTypeConstants.TYPE_GANGNAM : urls = CrawUrlConstants.TYPE_GANGNAM; break;
-            case CrawTypeConstants.TYPE_SONGPA : urls = CrawUrlConstants.TYPE_SONGPA; break;
-            case CrawTypeConstants.TYPE_GANGDONG : urls = CrawUrlConstants.TYPE_GANGDONG; break;
-            default: urls = null;
+        if(CrawTypeConstants.TYPE_JONGNO.equals(type)) {
+            return new JongnoGenerator(type);
+        } else if(CrawTypeConstants.TYPE_JUNG.equals(type)){
+            return new JungGenerator(type);
+        } else if(CrawTypeConstants.TYPE_YONGSAN.equals(type)){
+            return new YongSanGenerator(type);
+        } else if(CrawTypeConstants.TYPE_SEONGDONG.equals(type)){
+            return new SeongdongGenerator(type);
+        } else if(CrawTypeConstants.TYPE_GWANGJIN.equals(type)){
+            return new GwangjinGenerator(type);
+        } else if(CrawTypeConstants.TYPE_DONGDAEMUN.equals(type)){
+            return new DongDaeMunGenerator(type);
+        } else if(CrawTypeConstants.TYPE_JUNGNANG.equals(type)){
+            return new JungnagGenerator(type);
+        } else if(CrawTypeConstants.TYPE_SEONGBUK.equals(type)){
+            return new SeongBukGenerator(type);
+        } else if(CrawTypeConstants.TYPE_GANGBUK.equals(type)){
+            return new GangBukGenerator(type);
+        } else if(CrawTypeConstants.TYPE_DOBONG.equals(type)){
+            return new DoBongGenerator(type);
+        } else if(CrawTypeConstants.TYPE_NOWON.equals(type)){
+            return new NowonGenerator(type);
+        } else if(CrawTypeConstants.TYPE_EUNPYEONG.equals(type)){
+            return new EunpyeongGenerator(type);
+        } else if(CrawTypeConstants.TYPE_SEODAEMUN.equals(type)){
+            return new SeoDaeMunGenerator(type);
+        } else if(CrawTypeConstants.TYPE_MAPO.equals(type)){
+            return new MapoGenerator(type);
+        } else if(CrawTypeConstants.TYPE_YANGCHEON.equals(type)){
+            return new YangcheonGenerator(type);
+        } else if(CrawTypeConstants.TYPE_GANGSEO.equals(type)){
+            return new GangSeoGenerator(type);
+        } else if(CrawTypeConstants.TYPE_GURO.equals(type)){
+            return new GuroGenerator(type);
+        } else if(CrawTypeConstants.TYPE_GEUMCHEON.equals(type)){
+            return new GeumCheonGenerator(type);
+        } else if(CrawTypeConstants.TYPE_YEONGDEUNGPO.equals(type)){
+            return new YeongDeungPoGenerator(type);
+        } else if(CrawTypeConstants.TYPE_DONGJAK.equals(type)){
+            return new DongJakGenerator(type);
+        } else if(CrawTypeConstants.TYPE_GWANAK.equals(type)){
+            return new GwanakGenerator(type);
+        } else if(CrawTypeConstants.TYPE_SEOCHO.equals(type)){
+            return new SeoChoGenerator(type);
+        } else if(CrawTypeConstants.TYPE_GANGNAM.equals(type)){
+            return new GangNamGenerator(type);
+        } else if(CrawTypeConstants.TYPE_SONGPA.equals(type)){
+            return new SongPaGenerator(type);
+        } else if(CrawTypeConstants.TYPE_GANGDONG.equals(type)){
+            return new GangDongGenerator(type);
         }
-
-        return urls;
+        return null;
     }
 
-    public static Crawler getCawler(String type){
+    public static ChromeDriver intSelenium(){
+            Path path = Paths.get(System.getProperty("user.dir"), "src/main/resources/driver/chromedriver");
 
-        Crawler crawler = null;
+            System.setProperty("webdriver.chrome.driver", path.toString());
 
-        switch(type){
-            case CrawTypeConstants.TYPE_JONGNO : crawler = new JongnoCrawler(type); break;
-            case CrawTypeConstants.TYPE_JUNG : crawler = new JungCrawler(type); break;
-            case CrawTypeConstants.TYPE_YONGSAN : crawler = new YongSanCrawler(type); break;
-            case CrawTypeConstants.TYPE_SEONGDONG : crawler = new SeongdongCrawler(type); break;
-            case CrawTypeConstants.TYPE_GWANGJIN : crawler = new GwangjinCrawler(type); break;
-            case CrawTypeConstants.TYPE_DONGDAEMUN : crawler = new DongDaeMunCrawler(type); break;
-            case CrawTypeConstants.TYPE_JUNGNANG : crawler = new JungnagCrawler(type); break;
-            case CrawTypeConstants.TYPE_SEONGBUK : crawler = new SeongBukCrawler(type); break;
-            case CrawTypeConstants.TYPE_GANGBUK : crawler = new GangBukCrawler(type); break;
-            case CrawTypeConstants.TYPE_DOBONG : crawler = new DoBongCrawler(type); break;
-            case CrawTypeConstants.TYPE_NOWON : crawler = new NowonCrawler(type); break;
-            case CrawTypeConstants.TYPE_EUNPYEONG : crawler = new EunpyeongCrawler(type); break;
-            case CrawTypeConstants.TYPE_SEODAEMUN : crawler = new SeoDaeMunCrawler(type); break;
-            case CrawTypeConstants.TYPE_MAPO : crawler = new MapoCrawler(type); break;
-            case CrawTypeConstants.TYPE_YANGCHEON : crawler = new YangcheonCrawler(type); break;
-            case CrawTypeConstants.TYPE_GANGSEO : crawler = new GangSeoCrawler(type); break;
-            case CrawTypeConstants.TYPE_GURO : crawler = new GuroCrawler(type); break;
-            case CrawTypeConstants.TYPE_GEUMCHEON : crawler = new GeumCheonCrawler(type); break;
-            case CrawTypeConstants.TYPE_YEONGDEUNGPO : crawler = new YeongDeungPoCrawler(type); break;
-            case CrawTypeConstants.TYPE_DONGJAK : crawler = new DongJakCrawler(type); break;
-            case CrawTypeConstants.TYPE_GWANAK : crawler = new GwanakCrawler(type); break;
-            case CrawTypeConstants.TYPE_SEOCHO : crawler = new SeoChoCrawler(type); break;
-            case CrawTypeConstants.TYPE_GANGNAM : crawler = new GangNamCrawler(type); break;
-            case CrawTypeConstants.TYPE_SONGPA : crawler = new SongPaCrawler(type); break;
-            case CrawTypeConstants.TYPE_GANGDONG : crawler = new GangDongCrawler(type); break;
-            default: crawler = null;
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--start-maximized");
+            options.addArguments("--disable-popup-blocking");
+            options.addArguments("--disable-default-apps");
+
+            return new ChromeDriver(options);
+    }
+
+    public static void seleniumConnectUrl(ChromeDriver driver, String url){
+        driver.get(url);
+    }
+
+    public static void clickByClass(ChromeDriver driver, String className){
+        driver.findElementByClassName(className).click();
+    }
+
+    public static void selectAera(ChromeDriver driver, String selectSelector, String optionSelector){
+        driver.findElementByCssSelector(selectSelector).click();
+        driver.findElementByCssSelector(optionSelector).click();
+        driver.findElementByCssSelector("button#route-searchButton").click();
+    }
+
+    public static List<CrawlingBoard> crawlingData(ChromeDriver driver){
+        List<WebElement> pagenation = driver.findElementsByCssSelector("div#move-cont2>div#rsstableId>div.status-confirm>div#patients>div.cont-page-wrap>div#DataTables_Table_0_wrapper>div.dataTables_paginate>span>a");
+        ArrayList<CrawlingBoard> list = new ArrayList<CrawlingBoard>();
+
+        int pagelen = pagenation.size();
+        for(int k = 0;k<pagelen;k++){
+            try {
+                pagenation.get(k).click();
+            }catch (StaleElementReferenceException e){
+                pagenation = driver.findElementsByCssSelector("div#move-cont2>div#rsstableId>div.status-confirm>div#patients>div.cont-page-wrap>div#DataTables_Table_0_wrapper>div.dataTables_paginate>span>a");
+                pagenation.get(k).click();
+            }
+
+            List<WebElement> trs = driver.findElementsByCssSelector("table.route-datatable>tbody>tr");
+
+            int size = trs.size();
+
+            for(int i=0;i<size;i+=2){
+                List<WebElement> titletds = trs.get(i).findElements(new By.ByCssSelector("td"));
+                WebElement datatd = trs.get(i+1).findElement(new By.ByCssSelector("td"));
+
+                String confirmDate = titletds.get(3).getText();
+                String type = titletds.get(4).getText();
+                String status = titletds.get(5).findElement(new By.ByCssSelector("strong>span")).getText();
+                String data = "";
+
+                List<WebElement> tabletrs = datatd.findElements(new By.ByCssSelector("table>tbody>tr"));
+
+                if(tabletrs.size() == 0){
+                    List<WebElement> ps = datatd.findElements(new By.ByCssSelector("p"));
+                    int psize = ps.size();
+                    for(int z=0;z<psize;z++){
+                        String pdata = ps.get(z).getText();
+
+                        if(!pdata.contains("동선 없음") && !pdata.equals("확인중") && !pdata.equals("확인 중")) {
+                            data += CrawlingConstants.CRAW_DATA_SEPARATOR + pdata;
+
+                            if (z != psize - 1) {
+                                data += " ";
+                            }
+                        }
+                    }
+                }else{
+                    int tabletrssize = tabletrs.size();
+                    for(int j=0;j<tabletrssize;j++){
+                        WebElement tabletr = tabletrs.get(j);
+                        List<WebElement> tabletds = tabletr.findElements(new By.ByCssSelector("td"));
+
+                        if(!tabletds.get(2).getText().contains("비공")){
+                            data += tabletds.get(2).getText() + CrawlingConstants.CRAW_DATA_SEPARATOR + tabletds.get(3).getText() + CrawlingConstants.CRAW_DATA_SEPARATOR + tabletds.get(4).getText();
+                            if(j != tabletrssize-1){
+                                data += CrawlingConstants.CRAW_DATA_RAW_SEPARATOR;
+                            }
+                        }
+                    }
+                }
+
+                data = data.replaceAll("\\n", CrawlingConstants.CRAW_DATA_LINE_SEPARATOR);
+
+                if(!status.equals("퇴원") && !status.equals("사망") && (Util.isContainsDate(data) || Util.isContainsHour(data))){
+                    CrawlingBoard board = new CrawlingBoard();
+
+                    board.setConfirmDate(confirmDate);
+                    board.setType(type);
+                    board.setStatus(status);
+                    board.setData(data);
+
+                    list.add(board);
+                }
+            }
         }
 
-        return crawler;
+        return list;
+    }
+
+    public static void driverClose (ChromeDriver driver){
+        driver.close();
+    }
+
+    public static long getCountFromWeb(String url, String type){
+        Document doc = CrawlingUtil.connectUrl(url);
+        Elements tr = doc.select("div.status-confirm>table.tstyle-status>tbody>tr");
+        long result = -1;
+
+        int size = tr.size();
+
+        for(int i=0;i<size;i+=2){
+            Elements typelist = tr.get(i).select("th");
+            Elements valuelist = tr.get(i+1).select("td");
+
+            int typesize = typelist.size();
+
+            for(int j=0;j<typesize;j++){
+                String value = typelist.get(j).text();
+                if(!Util.isEmptyString(value) && value.equals(type)){
+                    return Long.valueOf(valuelist.get(j).text());
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static boolean isDuplicationMarker(ArrayList<Marker> list, String locationName){
+        return list.parallelStream().filter(m -> m.getLocationName().equals(locationName)).findFirst().orElse(null) != null;
     }
 }

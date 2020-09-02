@@ -21,6 +21,9 @@ public class Marker {
     @Column(name = "marker_no")
     private Long markerNo;
 
+    @Column(length = 50, nullable = true)
+    private String confirmDate;
+
     @Column(length = 500, nullable = false)
     private String locationName;
 
@@ -36,18 +39,12 @@ public class Marker {
     @Column(length = 500, nullable = false)
     private String addrDepThree;
 
+    @Column(length = 1000, nullable = true)
+    private String description;
+
     @Column(length = 20, nullable = true, name = "position_X")
     private String positionX;
 
     @Column(length = 20, nullable = true, name = "position_Y")
     private String positionY;
-
-    @Column(length = 50, nullable = true)
-    private String confirmDate;
-
-    @Column(length = 1000, nullable = true, name = "times")
-    private String times;
-
-    @Column(length = 1000, nullable = true)
-    private String description;
 }
