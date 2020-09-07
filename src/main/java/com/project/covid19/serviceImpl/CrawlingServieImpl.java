@@ -59,8 +59,12 @@ public class CrawlingServieImpl implements CrawlingService {
                 CrawlingUtil.driverClose(driver);
 
                 list = generator.getMarkers(data);
-                repo.deleteByAddrDepTwo(type);
-                repo.saveAll(list);
+
+                if(list != null && list.size() > 0){
+                    repo.deleteByAddrDepTwo(type);
+                    repo.saveAll(list);
+                }
+
             }else{
                 list = repo.findByAddrDepTwo(type);
             }

@@ -11,7 +11,7 @@
           </V-card>
         </v-col>
         <v-col cols="12" sm="1">
-          <v-btn text color="black" @click="searchAddress()">검색</v-btn>
+          <v-btn text color="black" @click="searchPlace()">검색</v-btn>
         </v-col>
       </v-row>
       <v-row align="center" justify="center">
@@ -26,6 +26,9 @@
 import postscribe from 'postscribe'
 import { mapGetters } from 'vuex'
 import axios from 'axios'
+import {
+  SET_LOGIN_LOACTION_XY
+} from '@/store/mutation-types.js'
 
 export default {
   name: 'Index',
@@ -47,7 +50,8 @@ export default {
   computed: {
     ...mapGetters([
       'getLoginLocationX',
-      'getLoginLocationY'
+      'getLoginLocationY',
+      'getLoginId'
     ])
   },
   methods: {
@@ -221,41 +225,59 @@ export default {
     setCirclePosition: function (position) {
       this.circle.setPosition(position)
     },
-    searchAddress: function () {
-      var geocoder = new window.kakao.maps.services.Geocoder()
+    searchPlace: function () {
+      var places = new window.kakao.maps.services.Places()
       var map = this.map
 
       var setMarker = this.setMarker
       var setCenterMarkerPosition = this.setCenterMarkerPosition
       var setCirclePosition = this.setCirclePosition
+      var getLoginId = this.getLoginId
 
-      geocoder.addressSearch(this.searchText, function (result, status) {
-        console.log(result)
+      var store = this.$store
 
-        var len = result.length
-        var type = null
-        var x = -1
-        var y = -1
+      places.keywordSearch(this.searchText, function (result, status) {
+        if (status === window.kakao.maps.services.Status.OK) {
+          console.log(result)
 
-        for (var i = 0; i < len; i++) {
-          var address = result[i].address
-          if (address.region_1depth_name === '서울') {
-            type = address.region_2depth_name
-            x = address.y
-            y = address.x
-            break
+          var len = result.length
+          var type = null
+          var x = -1
+          var y = -1
+
+          for (var i = 0; i < len; i++) {
+            var address = result[i].road_address_name
+
+            if (address.split(' ')[0] === ('서울')) {
+              type = address.split(' ')[0]
+              x = result[i].y
+              y = result[i].x
+              break
+            }
           }
-        }
 
-        if (type === null) {
-          alert('검색범위는 서울내로 한정합니다')
-        } else {
-          var position = new window.kakao.maps.LatLng(x, y)
+          if (type === null) {
+            alert('검색범위는 서울내로 한정합니다')
+          } else {
+            var position = new window.kakao.maps.LatLng(x, y)
+            map.panTo(position)
 
-          map.panTo(position)
-          setCenterMarkerPosition(position)
-          setCirclePosition(position)
-          setMarker(type)
+            setCenterMarkerPosition(position)
+            setCirclePosition(position)
+            setMarker(type)
+
+            var id = getLoginId
+            if (id != null) {
+              store.commit(SET_LOGIN_LOACTION_XY, { x: x, y: y })
+              axios.put(`http://localhost:7777/member/coordinate/${id}`, { x: x, y: y }).then(res => {
+                if (res.status === 200) {
+                  console.log(res)
+                }
+              }).catch(err => {
+                console.log(err)
+              })
+            }
+          }
         }
       })
     }

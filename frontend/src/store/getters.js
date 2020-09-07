@@ -5,6 +5,13 @@ export default {
   getLoginInfo (state) {
     return state.loginInfo
   },
+  getLoginId (state) {
+    if (state.loginInfo != null) {
+      return state.loginInfo.id
+    }
+
+    return null
+  },
   getBoardList (state) {
     return state.boardList
   },
@@ -27,19 +34,22 @@ export default {
     return state.board.writer === state.loginInfo.nickName
   },
   getLoginLocationX (state) {
-    if (state.loginInfo === null || state.loginInfo.locationX === null) {
+    console.log('getLoginLocationX')
+    if (state.loginInfo === null || state.loginInfo.positionX === undefined) {
     // return 37.566851234596804
+
       return 37.563439370739424
     }
 
-    return state.loginInfo.locationX
+    return state.loginInfo.positionX
   },
   getLoginLocationY (state) {
-    if (state.loginInfo === null || state.loginInfo.locationY === null) {
+    console.log('getLoginLocationY')
+    if (state.loginInfo === null || state.loginInfo.positionY === undefined) {
     // return 126.97866357016943
       return 127.03692392199129
     }
 
-    return state.loginInfo.locationX
+    return state.loginInfo.positionY
   }
 }

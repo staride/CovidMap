@@ -8,7 +8,8 @@ import {
   SET_MAP,
   SET_CENTER_MARKER,
   SET_MARKERS,
-  SET_CIRCLE
+  SET_CIRCLE,
+  SET_LOGIN_LOACTION_XY
 } from '@/store/mutation-types.js'
 
 import axios from 'axios'
@@ -49,5 +50,11 @@ export default {
   },
   [SET_CIRCLE] (state, circle) {
     state.circle = circle
+  },
+  [SET_LOGIN_LOACTION_XY] (state, data) {
+    if (state.loginInfo != null) {
+      state.loginInfo.positionX = data.x
+      state.loginInfo.positionY = data.y
+    }
   }
 }

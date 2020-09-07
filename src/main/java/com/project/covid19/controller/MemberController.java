@@ -4,6 +4,8 @@ import com.project.covid19.entity.Member;
 import com.project.covid19.Util.ValidatedUtil;
 import com.project.covid19.service.MemberService;
 import lombok.extern.java.Log;
+
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,5 +83,18 @@ public class MemberController {
         }
 
         return new ResponseEntity<Member>(member, HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("/coordinate/{id}")
+    public ResponseEntity<String> updateUserCoordinate(@PathVariable String id, @RequestBody String data) throws ParseException {
+        log.info("updateUserCoordinate() : id - " + id + ", data - " + data);
+        String message = "Fail";
+
+        if(service.updateUserCoordinate(id, data)){
+            message = "Success";
+            return new ResponseEntity<String>(message, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<String>(message, HttpStatus.BAD_REQUEST);
     }
 }
