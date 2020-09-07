@@ -8,4 +8,5 @@ public interface MemberService {
     public boolean register(Member member);
     public Member getLoginInfo(String id);
     public boolean updateUserCoordinate(String id, String data) throws ParseException;
+    public boolean checkNickName(String nickName);
 }

@@ -13,7 +13,7 @@
               <v-form>
                 <v-text-field label="id" v-model="info.id" :rules="idRules" :hint="idHint" :persistent-hint="true" @keyup="checkId" prepend-icon="mdi-account" type="text" :autofocus="true"></v-text-field>
                 <v-text-field label="password" v-model="info.password" :rules="passwordRules" prepend-icon="mdi-lock" type="password"></v-text-field>
-                <v-text-field label="nickName" v-model="info.nickName" :rules="nickNameRules" prepend-icon="mdi-contacts" type="text"></v-text-field>
+                <v-text-field label="nickName" v-model="info.nickName" :rules="nickNameRules" :hint="nickHint" :persistent-hint="true" @keyup="checkNickName" prepend-icon="mdi-contacts" type="text"></v-text-field>
                 <v-text-field label="phone" v-model="info.phone" :rules="phoneRules" prepend-icon="mdi-phone" type="text"></v-text-field>
                 <v-text-field label="email" v-model="info.email" :rules="emailRules" prepend-icon="mdi-email" type="text"></v-text-field>
               </v-form>
@@ -46,7 +46,9 @@ export default {
         email: ''
       },
       idHint: '',
-      isCheckId: false
+      nickHint: '',
+      isCheckId: false,
+      isCheckNickName: false
     }
   },
   computed: {
@@ -58,7 +60,7 @@ export default {
       'emailRules'
     ]),
     isValidateMemberInfo: function () {
-      return this.info && this.info.password.trim() !== '' && this.info.nickName.trim() !== '' &&
+      return this.info && this.info.password.trim() !== '' && (this.isCheckNickName && this.info.nickName.trim()) !== '' &&
       this.info.phone.trim() !== '' && this.info.email.trim() !== '' && (this.isCheckId && this.info.id.trim() !== '')
     }
   },
@@ -91,7 +93,7 @@ export default {
     checkId: function () {
       // console.log('call check id')
       if (this.info.id.trim !== '') {
-        axios.get(`http://localhost:7777/member/check/${this.info.id}`).then(res => {
+        axios.get(`http://localhost:7777/member/checkid/${this.info.id}`).then(res => {
           if (res.status === 200) {
             if (res.data === 'Success') {
               this.idHint = '이 id는 사용이 가능합니다.'
@@ -99,6 +101,28 @@ export default {
             } else {
               this.idHint = '중복된 id 입니다. 다른 id를 사용해 주세요'
               this.isCheckId = false
+            }
+          } else {
+            console.log('status : ' + res.status + ', data : ' + res.data)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      } else {
+        console.log('id is empty value')
+      }
+    },
+    checkNickName: function () {
+      // console.log('call check id')
+      if (this.info.id.trim !== '') {
+        axios.get(`http://localhost:7777/member/checknick/${this.info.nickName}`).then(res => {
+          if (res.status === 200) {
+            if (res.data === 'Success') {
+              this.nickHint = '이 nickName은 사용이 가능합니다.'
+              this.isCheckNickName = true
+            } else {
+              this.nickHint = '중복된 nickName 입니다. 다른 nickName을 사용해 주세요'
+              this.isCheckNickName = false
             }
           } else {
             console.log('status : ' + res.status + ', data : ' + res.data)

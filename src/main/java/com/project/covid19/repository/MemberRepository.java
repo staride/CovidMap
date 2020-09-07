@@ -11,4 +11,5 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface MemberRepository extends JpaRepository <Member, Long> {
     public List<Member> findById(String id);
+    public List<Member> findByNickName(String nickName);
 }

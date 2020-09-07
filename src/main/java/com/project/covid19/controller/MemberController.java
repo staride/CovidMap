@@ -25,7 +25,7 @@ public class MemberController {
     @Autowired
     PasswordEncoder encoder;
 
-    @GetMapping("/check/{id}")
+    @GetMapping("/checkid/{id}")
     public ResponseEntity<String> checkId(@PathVariable String id){
         log.info("checkid() : " + id);
 
@@ -33,6 +33,26 @@ public class MemberController {
 
         if(!(id == null || id.trim().isEmpty())){
             if(service.checkId(id)){
+                message = "Success";
+            }else{
+                message = "Fail";
+            }
+
+            return new ResponseEntity<String>(message, HttpStatus.OK);
+        }
+
+        message = "Fail";
+        return new ResponseEntity<String>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/checknick/{nickName}")
+    public ResponseEntity<String> checkNickName(@PathVariable String nickName){
+        log.info("checkNickName() : " + nickName);
+
+        String message = null;
+
+        if(!(nickName == null || nickName.trim().isEmpty())){
+            if(service.checkNickName(nickName)){
                 message = "Success";
             }else{
                 message = "Fail";

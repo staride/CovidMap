@@ -20,7 +20,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean checkId(String id) {
-        return repo.findById(id).isEmpty() ? true : false ;
+        return repo.findById(id).isEmpty() ? true : false;
     }
 
     @Override
@@ -58,5 +58,10 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean checkNickName(String nickName) {
+        return repo.findByNickName(nickName).isEmpty() ? true : false;
     }
 }
