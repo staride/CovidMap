@@ -1,11 +1,13 @@
 package com.project.covid19.config;
 
+import com.project.covid19.constants.SecurityConstants;
 import com.project.covid19.security.custom.CustomUserDetailsService;
 import com.project.covid19.security.filter.JwtAuthenticationFilter;
 import com.project.covid19.security.filter.JwtAuthorizationFilter;
 import com.project.covid19.security.handler.CustomAccessDeniedHandler;
 import lombok.extern.java.Log;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,6 +28,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 //@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         log.info("configure");
@@ -45,6 +49,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 // 세션의 정책은 Stateless로 설정
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/board").permitAll()
+                .antMatchers(HttpMethod.GET, "/board/{boardNo}").permitAll()
+                .antMatchers(HttpMethod.POST, "/member/register").permitAll()
+                .antMatchers(HttpMethod.GET, "/member/checkid/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/member/checknick/{nickName}").permitAll()
+                .antMatchers(HttpMethod.POST, SecurityConstants.AUTH_LOGIN_URL).permitAll()
+                .antMatchers("/craw/**").permitAll()
+                .anyRequest().authenticated();
+
     }
 
     @Bean
