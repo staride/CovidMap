@@ -28,6 +28,7 @@ export default {
     console.log('SET_LOGIN_INFO')
     state.isLogin = true
     state.loginInfo = data
+    cookies.set('usuerid', data.id, '24h')
   },
   [DESTROY_LOGIN_INFO] (state, data) {
     state.isLogin = false
