@@ -1,5 +1,6 @@
 import {
   SET_AUTH_TOKEN,
+  SET_AUTH_TOKENS,
   DESTROY_AUTH_TOKEN,
   SET_LOGIN_INFO,
   DESTROY_LOGIN_INFO,
@@ -16,13 +17,21 @@ import axios from 'axios'
 import cookies from 'vue-cookies'
 
 export default {
-  [SET_AUTH_TOKEN] (state, accessToken) {
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-    cookies.set('jwt', accessToken, '24h')
+  [SET_AUTH_TOKENS] (state, tokens) {
+    console.log('SET_AUTH_TOKENS')
+    axios.defaults.headers.common.Authorization = `Bearer ${tokens.access_token}`
+    cookies.set('jwt', tokens.access_token, '35m')
+    cookies.set('refresh', tokens.refresh_token, (24 * 14) + 'h')
+  },
+  [SET_AUTH_TOKEN] (state, token) {
+    console.log('SET_AUTH_TOKEN')
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`
+    cookies.set('jwt', token, '35m')
   },
   [DESTROY_AUTH_TOKEN] (state) {
     delete axios.defaults.headers.common.Authorization
     cookies.remove('jwt')
+    cookies.remove('refresh')
   },
   [SET_LOGIN_INFO] (state, data) {
     console.log('SET_LOGIN_INFO')

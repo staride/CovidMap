@@ -1,19 +1,27 @@
 package com.project.covid19.security.filter;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.project.covid19.Util.Util;
+import com.project.covid19.component.ApplicationContextProvider;
 import com.project.covid19.constants.SecurityConstants;
+import com.project.covid19.entity.Member;
+import com.project.covid19.repository.MemberRepository;
 import com.project.covid19.security.custom.CustomUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -62,9 +70,41 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setIssuer(SecurityConstants.TOKEN_ISSUER)
                 .setAudience(SecurityConstants.TOKEN_AUDIENCE)
                 .setSubject("" + user.getMember().getUserNo())
-                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 30)))
+                // .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60)))
                 .compact();
 
-        response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+        byte[] refreshKey = SecurityConstants.JWT_SECRET_REFRESH.getBytes();
+        String refresh = Jwts.builder()
+                .signWith(Keys.hmacShaKeyFor(refreshKey), SignatureAlgorithm.HS512)
+                .setHeaderParam("type", SecurityConstants.TOKEN_TYPE)
+                .setIssuer(SecurityConstants.TOKEN_ISSUER)
+                .setAudience(SecurityConstants.TOKEN_AUDIENCE)
+                .setSubject("" + user.getMember().getUserNo())
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 14)))
+                .compact();
+
+        try {
+            JSONObject json = new JSONObject();
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put(SecurityConstants.ACCESS_TOKEN_KEY, token);
+            map.put(SecurityConstants.REFRESH_TOKEN_KEY, refresh);
+
+            json.put("jwt", map);
+
+            response.getWriter().write(json.toJSONString());
+            response.flushBuffer();
+        } catch (Exception e){
+            logger.debug(ExceptionUtils.getStackTrace(e));
+        }
+
+        // response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+        // response.addHeader(SecurityConstants.TOKEN_REFRESH_HEADER, SecurityConstants.TOKEN_PREFIX + refresh);
+
+        ApplicationContext context = ApplicationContextProvider.getApplicationContext();
+        MemberRepository repo = context.getBean(MemberRepository.class);
+        Member member = repo.findById(user.getMember().getUserNo()).get();
+        member.setRefreshToken(refresh);
+        repo.save(member);
     }
 }

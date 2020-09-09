@@ -35,7 +35,7 @@ export default {
   },
   getLoginLocationX (state) {
     console.log('getLoginLocationX')
-    if (state.loginInfo === null || state.loginInfo.positionX === undefined) {
+    if (state.loginInfo === null || state.loginInfo.positionX === undefined || state.loginInfo.positionX === '') {
     // return 37.566851234596804
 
       return 37.563439370739424
@@ -45,7 +45,7 @@ export default {
   },
   getLoginLocationY (state) {
     console.log('getLoginLocationY')
-    if (state.loginInfo === null || state.loginInfo.positionY === undefined) {
+    if (state.loginInfo === null || state.loginInfo.positionY === undefined || state.loginInfo.positionY === '') {
     // return 126.97866357016943
       return 127.03692392199129
     }

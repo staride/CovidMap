@@ -50,20 +50,16 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(SecurityConstants.TOKEN_HEADER);
         if (isNotEmpty(token)) {
+            Jws<Claims> parsedToken = null;
+
             try {
                 byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
 
-                Jws<Claims> parsedToken = Jwts.parser()
+                parsedToken = Jwts.parser()
                         .setSigningKey(signingKey)
                         .parseClaimsJws(token.replace("Bearer ", ""));
 
-                String username = parsedToken
-                        .getBody()
-                        .getSubject();
 
-                if (isNotEmpty(username)) {
-                    return new UsernamePasswordAuthenticationToken(username, null, null);
-                }
             } catch (ExpiredJwtException exception) {
                 log.warn("Request to parse expired JWT : {} failed : {}", token, exception.getMessage());
             } catch (UnsupportedJwtException exception) {
@@ -72,8 +68,25 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 log.warn("Request to parse invalid JWT : {} failed : {}", token, exception.getMessage());
             } catch (SignatureException exception) {
                 log.warn("Request to parse JWT with invalid signature : {} failed : {}", token, exception.getMessage());
+                log.warn("Try Refresh parse");
+                byte[] signingKey = SecurityConstants.JWT_SECRET_REFRESH.getBytes();
+
+                parsedToken = Jwts.parser()
+                        .setSigningKey(signingKey)
+                        .parseClaimsJws(token.replace("Bearer ", ""));
+
             } catch (IllegalArgumentException exception) {
                 log.warn("Request to parse empty or null JWT : {} failed : {}", token, exception.getMessage());
+            }finally {
+                if(parsedToken != null){
+                    String username = parsedToken
+                            .getBody()
+                            .getSubject();
+
+                    if (isNotEmpty(username)) {
+                        return new UsernamePasswordAuthenticationToken(username, null, null);
+                    }
+                }
             }
         }
 

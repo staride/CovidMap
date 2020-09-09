@@ -99,6 +99,7 @@ public class MemberController {
 
         if(member != null){
             member.setPassword("");
+            member.setRefreshToken("");
             return new ResponseEntity<Member>(member, HttpStatus.OK);
         }
 

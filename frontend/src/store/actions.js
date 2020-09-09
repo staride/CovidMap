@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {
-  SET_AUTH_TOKEN,
+  SET_AUTH_TOKENS,
   DESTROY_AUTH_TOKEN,
   SET_LOGIN_INFO,
   DESTROY_LOGIN_INFO,
@@ -17,11 +17,9 @@ export default {
 
     axios.post('http://localhost:7777/api/authenticate', data).then(res => {
       if (res.status === 200) {
-        const { authorization } = res.headers
-        const accessToken = authorization.substring(7)
-        // console.log('accessToken : ' + accessToken)
-
-        commit(SET_AUTH_TOKEN, accessToken)
+        const tokens = res.data.jwt
+        // console.log('tokens : ' + tokens)
+        commit(SET_AUTH_TOKENS, tokens)
         axios.get(`http://localhost:7777/member/getLoginInfo/${data.id}`).then(res => {
           if (res.status === 200 && res.data !== null) {
             commit(SET_LOGIN_INFO, res.data)

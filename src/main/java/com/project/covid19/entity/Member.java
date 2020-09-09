@@ -38,4 +38,7 @@ public class Member {
 
     @Column(length = 20, nullable = true, name = "position_y")
     private String positionY;
+
+    @Column(length = 4096, nullable = true)
+    private String refreshToken;
 }
