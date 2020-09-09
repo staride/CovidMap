@@ -8,6 +8,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class CrawlingContainer {
     CrawlingService service;
 
     @GetMapping("/{type}")
+    @Async
     public ResponseEntity<List<Marker>> getMarkersList(@PathVariable String type){
         log.info("getMarkersInfoList() : type - " + type);
         List<Marker> list = null;
