@@ -55,8 +55,8 @@ export default {
   methods: {
     boardWrite: function () {
       if (this.isValidateBoardInfo) {
-        console.log('title : ' + this.board.title)
-        console.log('contents : ' + this.board.contents)
+        // console.log('title : ' + this.board.title)
+        // console.log('contents : ' + this.board.contents)
 
         var info = this.getLoginInfo
 

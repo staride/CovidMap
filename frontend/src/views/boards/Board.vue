@@ -71,7 +71,7 @@ export default {
       'getBoardListAction'
     ]),
     rowClick: function (item, row) {
-      console.log('boardNo : ' + item.boardNo)
+      // console.log('boardNo : ' + item.boardNo)
       router.push({ name: 'BoardRead', params: { boardNo: item.boardNo.toString() } })
     },
     moveWriteBoard: function () {

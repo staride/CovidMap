@@ -4,7 +4,7 @@
       <v-img :contain="true" max-width="200px" max-height="100px" height="100px" src="@/assets/logo.png" position="left center"/>
     </div>
     <div class="header-div-title">
-      <v-toolbar-title position="center center">App Title</v-toolbar-title>
+      <v-toolbar-title position="center center">COVID19 MAP</v-toolbar-title>
     </div>
     <div class="header-div-items">
       <slot name="headerItems"></slot>

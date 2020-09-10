@@ -2,7 +2,7 @@
   <v-main class="py-12">
     <v-container class="fill-height" fluid>
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="12" class="pa-0">
+        <v-col cols="12" sm="11" class="pa-0">
           <v-card>
             <v-card-title>
               <v-spacer/>
@@ -64,13 +64,13 @@ export default {
   methods: {
     initScript: function () {
       // console.log('initScript')
-      var src = '<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=27182d803bc31145e52687dda5546c30&libraries=services"></scrip'
+      let src = '<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=27182d803bc31145e52687dda5546c30&libraries=services"></scrip'
       src = src + 't>'
 
-      var initfunction = this.initMap
+      const initFunction = this.initMap
 
       postscribe(document.head, src, {
-        done: initfunction
+        done: initFunction
       })
     },
     initMap: function () {
@@ -81,11 +81,11 @@ export default {
       this.getMarkersFromAddress()
     },
     getMap: function (position) {
-      var map = null
+      let map
 
       if (this.map === null) {
-        var container = document.getElementById('map')
-        var options = {
+        const container = document.getElementById('map')
+        const options = {
           center: position,
           level: 3
         }
@@ -102,7 +102,7 @@ export default {
       return new window.kakao.maps.LatLng(this.getLoginLocationX, this.getLoginLocationY)
     },
     getCenterMarker: function () {
-      var center = null
+      let center
 
       if (this.centerMarker === null) {
         center = new window.kakao.maps.Marker({
@@ -118,7 +118,7 @@ export default {
       return center
     },
     getNewMarker: function (position) {
-      var marker = new window.kakao.maps.Marker({
+      const marker = new window.kakao.maps.Marker({
         map: this.map,
         position: position
       })
@@ -126,7 +126,7 @@ export default {
       return marker
     },
     getCircle: function () {
-      var circle = null
+      let circle = null
 
       if (this.circle === null) {
         circle = new window.kakao.maps.Circle({
@@ -149,24 +149,24 @@ export default {
       return circle
     },
     getMarkersFromAddress: function () {
-      var geocoder = new window.kakao.maps.services.Geocoder()
-      var position = this.centerMarker.getPosition()
-      var setMarker = this.setMarker
+      const geocoder = new window.kakao.maps.services.Geocoder()
+      const position = this.centerMarker.getPosition()
+      const setMarker = this.setMarker
       geocoder.coord2Address(position.getLng(), position.getLat(), function (result, status) {
         if (status === window.kakao.maps.services.Status.OK) {
-          var address = result[0].address
+          const address = result[0].address
           if (address.region_1depth_name === '서울') {
-            var type = address.region_2depth_name
+            const type = address.region_2depth_name
             setMarker(type)
           }
         }
       })
     },
     removeMarkers: function () {
-      var len = this.markers.length
+      const len = this.markers.length
       if (len > 0) {
-        for (var i = 0; i < len; i++) {
-          var marker = this.markers[i]
+        for (let i = 0; i < len; i++) {
+          const marker = this.markers[i]
           marker.setMap(null)
         }
 
@@ -175,20 +175,20 @@ export default {
     },
     setMarker: function (type) {
       axios.get(`http://localhost:7777/craw/${type}`).then(res => {
-        var len = res.data.length
-        var geocoder = new window.kakao.maps.services.Geocoder()
-        var markers = this.markers
-        var setViewMarker = this.setViewMarker
-        var getMarker = this.getNewMarker
+        const len = res.data.length
+        const geocoder = new window.kakao.maps.services.Geocoder()
+        const markers = this.markers
+        const setViewMarker = this.setViewMarker
+        const getMarker = this.getNewMarker
         this.removeMarkers()
 
-        for (var i = 0; i < len; i++) {
-          var data = res.data[i]
+        for (let i = 0; i < len; i++) {
+          const data = res.data[i]
           // console.log('name : ' + data.locationName)
           geocoder.addressSearch(data.address, function (result, status) {
             if (status === window.kakao.maps.services.Status.OK) {
-              var position = new window.kakao.maps.LatLng(result[0].y, result[0].x)
-              var marker = getMarker(position)
+              const position = new window.kakao.maps.LatLng(result[0].y, result[0].x)
+              const marker = getMarker(position)
 
               marker.setVisible(false)
               setViewMarker(marker)
@@ -201,13 +201,13 @@ export default {
       })
     },
     setViewMarker: function (marker) {
-      var center = this.circle.getPosition()
-      var radius = this.circle.getRadius()
-      var line = new window.kakao.maps.Polyline()
-      var path = [marker.getPosition(), center]
+      const center = this.circle.getPosition()
+      const radius = this.circle.getRadius()
+      const line = new window.kakao.maps.Polyline()
+      const path = [marker.getPosition(), center]
       line.setPath(path)
 
-      var dist = line.getLength()
+      const dist = line.getLength()
       // console.log('radius : ' + radius)
       // console.log('dist : ' + dist)
 
@@ -218,11 +218,11 @@ export default {
       }
     },
     changeRadius: function () {
-      var len = this.markers.length
+      const len = this.markers.length
       this.circle.setRadius(this.selectItem)
 
-      for (var i = 0; i < len; i++) {
-        var marker = this.markers[i]
+      for (let i = 0; i < len; i++) {
+        const marker = this.markers[i]
         this.setViewMarker(marker)
       }
     },
@@ -233,27 +233,27 @@ export default {
       this.circle.setPosition(position)
     },
     searchPlace: function () {
-      var places = new window.kakao.maps.services.Places()
-      var map = this.map
+      const places = new window.kakao.maps.services.Places()
+      const map = this.map
 
-      var setMarker = this.setMarker
-      var setCenterMarkerPosition = this.setCenterMarkerPosition
-      var setCirclePosition = this.setCirclePosition
-      var getLoginId = this.getLoginId
+      const setMarker = this.setMarker
+      const setCenterMarkerPosition = this.setCenterMarkerPosition
+      const setCirclePosition = this.setCirclePosition
+      const getLoginId = this.getLoginId
 
-      var store = this.$store
+      const store = this.$store
 
       places.keywordSearch(this.searchText, function (result, status) {
         if (status === window.kakao.maps.services.Status.OK) {
           console.log(result)
 
-          var len = result.length
-          var type = null
-          var x = -1
-          var y = -1
+          const len = result.length
+          let type = null
+          let x = -1
+          let y = -1
 
-          for (var i = 0; i < len; i++) {
-            var address = result[i].road_address_name
+          for (let i = 0; i < len; i++) {
+            const address = result[i].road_address_name
 
             if (address.split(' ')[0] === ('서울')) {
               type = address.split(' ')[0]
@@ -266,14 +266,14 @@ export default {
           if (type === null) {
             alert('검색범위는 서울내로 한정합니다')
           } else {
-            var position = new window.kakao.maps.LatLng(x, y)
+            const position = new window.kakao.maps.LatLng(x, y)
             map.panTo(position)
 
             setCenterMarkerPosition(position)
             setCirclePosition(position)
             setMarker(type)
 
-            var id = getLoginId
+            const id = getLoginId
             if (id != null) {
               store.commit(SET_LOGIN_LOACTION_XY, { x: x, y: y })
               axios.put(`http://localhost:7777/member/coordinate/${id}`, { x: x, y: y }).then(res => {

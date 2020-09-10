@@ -36,25 +36,25 @@ export default {
       'logoutAction'
     ]),
     goMainView () {
-      console.log('goMainView')
+      // console.log('goMainView')
       if (window.location.pathname !== '/') {
         router.push('/')
       }
     },
     goBoardView () {
-      console.log('goBoardView')
+      // console.log('goBoardView')
       if (window.location.pathname !== '/board') {
         router.push({ name: 'BoardMain' })
       }
     },
     goSignIn () {
-      console.log('signIn')
+      // console.log('signIn')
       if (window.location.pathname !== '/signIn') {
         router.push({ name: 'SignIn' })
       }
     },
     logout () {
-      console.log('logout')
+      // console.log('logout')
       this.logoutAction()
     }
   }

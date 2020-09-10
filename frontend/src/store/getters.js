@@ -16,11 +16,11 @@ export default {
     return state.boardList
   },
   getBoardTitle (state) {
-    console.log('state.board.title : ' + state.board.title)
+    // console.log('state.board.title : ' + state.board.title)
     return state.board.title
   },
   getBoardContents (state) {
-    console.log('state.board.contents : ' + state.board.contents)
+    // console.log('state.board.contents : ' + state.board.contents)
     return state.board.contents
   },
   getSameUser (state) {

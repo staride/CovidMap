@@ -58,7 +58,7 @@ export default {
       }
 
       this.routerViewStyle = {
-        border: 'solid 1px gray',
+        // border: 'solid 1px gray',
         width: this.getRouterViewWidth + 'px',
         height: this.getRouterViewHeight + 'px'
       }

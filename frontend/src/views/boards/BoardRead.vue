@@ -69,7 +69,7 @@ export default {
     },
     modifyBoard: function () {
       const { title, contents } = { title: this.title, contents: this.contents }
-      console.log('modifyBoard() data - boardNo : ' + this.boardNo)
+      // console.log('modifyBoard() data - boardNo : ' + this.boardNo)
       axios.put(`http://localhost:7777/board/${this.boardNo}`, { title, contents }).then(res => {
         if (res.status === 200 && res.data === 'Success') {
           alert('글 수정 성공')
@@ -82,7 +82,7 @@ export default {
       })
     },
     removeBoard: function () {
-      console.log('removeBoard() data - boardNo : ' + this.boardNo)
+      // console.log('removeBoard() data - boardNo : ' + this.boardNo)
       axios.delete(`http://localhost:7777/board/${this.boardNo}`).then(res => {
         if (res.status === 200 && res.data === 'Success') {
           alert('글 삭제 성공')
