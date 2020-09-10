@@ -20,13 +20,13 @@ export default {
   [SET_AUTH_TOKENS] (state, tokens) {
     console.log('SET_AUTH_TOKENS')
     axios.defaults.headers.common.Authorization = `Bearer ${tokens.access_token}`
-    cookies.set('jwt', tokens.access_token, '35m')
+    cookies.set('jwt', tokens.access_token, '30m')
     cookies.set('refresh', tokens.refresh_token, (24 * 14) + 'h')
   },
   [SET_AUTH_TOKEN] (state, token) {
     console.log('SET_AUTH_TOKEN')
     axios.defaults.headers.common.Authorization = `Bearer ${token}`
-    cookies.set('jwt', token, '35m')
+    cookies.set('jwt', token, '30m')
   },
   [DESTROY_AUTH_TOKEN] (state) {
     delete axios.defaults.headers.common.Authorization
@@ -37,7 +37,7 @@ export default {
     console.log('SET_LOGIN_INFO')
     state.isLogin = true
     state.loginInfo = data
-    cookies.set('usuerid', data.id, '24h')
+    cookies.set('usuerid', data.id, '1h')
   },
   [DESTROY_LOGIN_INFO] (state, data) {
     state.isLogin = false

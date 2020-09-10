@@ -11,8 +11,8 @@
             </v-toolbar>
           </v-card>
           <v-card-text>
-            <v-text-field label="title" v-model="getBoardTitle" type="text" :disabled="isDisabled"></v-text-field>
-            <v-textarea height="400px" v-model="getBoardContent" label="contents" type="text" :rows="16" :disabled="isDisabled" aria-multiline="true"></v-textarea>
+            <v-text-field label="title" v-model="title" type="text" :disabled="isDisabled"></v-text-field>
+            <v-textarea height="400px" v-model="contents" label="contents" type="text" :rows="16" :disabled="isDisabled" aria-multiline="true"></v-textarea>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -35,7 +35,9 @@ export default {
   name: 'BoardReadView',
   data: function () {
     return {
-      isDisabled: true
+      isDisabled: true,
+      title: '',
+      contents: ''
     }
   },
   props: {
@@ -48,7 +50,7 @@ export default {
     ...mapGetters([
       'getSameUser',
       'getBoardTitle',
-      'getBoardContent'
+      'getBoardContents'
     ])
   },
   methods: {
@@ -66,9 +68,9 @@ export default {
       }
     },
     modifyBoard: function () {
-      var data = this.getBoard
-      console.log('modifyBoard() data - boardNo : ' + data.boardNo)
-      axios.put(`http://localhost:7777/board/${this.getBoard.boardNo}`, data).then(res => {
+      const { title, contents } = { title: this.title, contents: this.contents }
+      console.log('modifyBoard() data - boardNo : ' + this.boardNo)
+      axios.put(`http://localhost:7777/board/${this.boardNo}`, { title, contents }).then(res => {
         if (res.status === 200 && res.data === 'Success') {
           alert('글 수정 성공')
         } else {
@@ -80,9 +82,8 @@ export default {
       })
     },
     removeBoard: function () {
-      var data = this.getBoard
-      console.log('removeBoard() data - boardNo : ' + data.boardNo)
-      axios.delete(`http://localhost:7777/board/${data.boardNo}`).then(res => {
+      console.log('removeBoard() data - boardNo : ' + this.boardNo)
+      axios.delete(`http://localhost:7777/board/${this.boardNo}`).then(res => {
         if (res.status === 200 && res.data === 'Success') {
           alert('글 삭제 성공')
         } else {
@@ -96,6 +97,8 @@ export default {
   },
   mounted () {
     this.getBoardAction(this.boardNo)
+    this.title = this.getBoardTitle
+    this.contents = this.getBoardContents
   }
 }
 </script>

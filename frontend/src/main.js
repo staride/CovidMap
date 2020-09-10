@@ -55,7 +55,6 @@ function init () {
       if (res.status === 200 && res.data !== null) {
         store.commit(SET_LOGIN_INFO, res.data)
         // alert('로그인 성공')
-        router.go(-1)
       } else {
         console.log('status : ' + res.status + ', data : ' + res.data)
         // alert('로그인 실패')

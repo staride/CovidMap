@@ -112,7 +112,7 @@ export default {
 
         this.centerMarker = center
       } else {
-        center = this.this.centerMarker
+        center = this.centerMarker
       }
 
       return center
