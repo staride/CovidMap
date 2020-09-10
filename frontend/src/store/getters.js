@@ -25,7 +25,7 @@ export default {
     if (state.board === null) {
       return ''
     }
-    return state.board.title
+    return state.board.contents
   },
   getSameUser (state) {
     if (state.board === null || state.loginInfo === null) {

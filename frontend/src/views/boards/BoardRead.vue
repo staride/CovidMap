@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main class="py-12">
     <v-container class="fill-height" fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="6">
@@ -11,8 +11,8 @@
             </v-toolbar>
           </v-card>
           <v-card-text>
-            <v-text-field label="title" v-model="getBoardTitle" prepend-icon="mdi-lock" type="text" :disabled="isDisabled"></v-text-field>
-            <v-textarea height="300" v-model="getBoardContent" label="contents" prepend-icon="mdi-lock" type="text" :disabled="isDisabled"></v-textarea>
+            <v-text-field label="title" v-model="getBoardTitle" type="text" :disabled="isDisabled"></v-text-field>
+            <v-textarea height="400px" v-model="getBoardContent" label="contents" type="text" :rows="16" :disabled="isDisabled" aria-multiline="true"></v-textarea>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>

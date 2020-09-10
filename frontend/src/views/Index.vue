@@ -1,21 +1,28 @@
 <template>
-  <v-main>
+  <v-main class="py-12">
     <v-container class="fill-height" fluid>
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="2">
-          <v-select v-model="selectItem" :items="items" @change="changeRadius" label="Outlined style" outlined></v-select>
+        <v-col cols="12" sm="12" class="pa-0">
+          <v-card>
+            <v-card-title>
+              <v-spacer/>
+              COVID PATH MAP
+              <v-spacer/>
+              <div class="ma-0 pa-0" id="selectDiv">
+                <v-select class="ma-0 pa-0" v-model="selectItem" :items="items" @change="changeRadius" :hide-details="true"/>
+              </div>
+              <div class="my-0 mr-0 ml-2 pa-0" id="searchDiv">
+                <v-text-field class="ma-0 pa-0" label="장소 입력" v-model="searchText" type="text" single-line />
+              </div>
+              <div class="my-0 mr-0 ml-2 pa-0" id="searchBtnDiv">
+                <v-btn class="ma-0 pa-0" text color="black" @click="searchPlace()">검색</v-btn>
+              </div>
+            </v-card-title>
+            <v-card-text>
+              <div id="map" style="height: 520px"></div>
+            </v-card-text>
+          </v-card>
         </v-col>
-        <v-col cols="12" sm="5">
-          <v-card class="elevation-12">
-            <v-text-field label="주소 입력" v-model="searchText" prepend-icon="mdi-account" type="text" :dense="true"></v-text-field>
-          </V-card>
-        </v-col>
-        <v-col cols="12" sm="1">
-          <v-btn text color="black" @click="searchPlace()">검색</v-btn>
-        </v-col>
-      </v-row>
-      <v-row align="center" justify="center">
-        <div id="map" style="width: 1200px; height: 400px"></div>
       </v-row>
     </v-container>
   </v-main>
@@ -291,3 +298,17 @@ export default {
   }
 }
 </script>
+<style>
+#selectDiv {
+  width: 80px;
+  height: 32px;
+}
+#searchDiv {
+  width: 250px;
+  height: 32px;
+}
+#searchBtnDiv {
+  width: 50px;
+  height: 32px;
+}
+</style>
