@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CrawlingBoard {
-
     private String confirmDate;
     private String type;
     private String status;

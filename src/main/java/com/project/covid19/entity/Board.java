@@ -5,6 +5,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Data
 @NoArgsConstructor
@@ -13,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @EqualsAndHashCode(of = "boardNo")
 @ToString
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "board")
 public class Board {
 

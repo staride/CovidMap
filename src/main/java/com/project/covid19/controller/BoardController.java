@@ -83,6 +83,7 @@ public class BoardController {
     public ResponseEntity<String> modifyBoard(@PathVariable long boardNo, @RequestBody @Validated Board board){
         log.info("modifyBoard() : boardNo - " + boardNo);
         log.info("modifyBoard() : Board - " + board);
+        board.setBoardNo(boardNo);
         String message = null;
 
         if(service.modifyBoard(board)){

@@ -1,6 +1,9 @@
 package com.project.covid19.entity;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
 @Data
@@ -10,6 +13,8 @@ import javax.persistence.*;
 @EqualsAndHashCode(of = "userNo")
 @ToString
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "member")
 public class Member {
 
@@ -34,10 +39,10 @@ public class Member {
     private String email;
 
     @Column(length = 20, nullable = true, name = "position_X")
-    private String positionX;
+    private String positionX = "";
 
     @Column(length = 20, nullable = true, name = "position_y")
-    private String positionY;
+    private String positionY = "";
 
     @Column(length = 4096, nullable = true)
     private String refreshToken;

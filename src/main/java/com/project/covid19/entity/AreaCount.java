@@ -3,6 +3,7 @@ package com.project.covid19.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
 @ToString
 @Entity
 @DynamicInsert
+@DynamicUpdate
 @Table(name = "area_count")
 public class AreaCount {
 
