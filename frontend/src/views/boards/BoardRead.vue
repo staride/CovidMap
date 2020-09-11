@@ -12,7 +12,7 @@
           </v-card>
           <v-card-text>
             <v-text-field label="title" v-model="title" type="text" :disabled="isDisabled"></v-text-field>
-            <v-textarea height="400px" v-model="contents" label="contents" type="text" :rows="16" :disabled="isDisabled" aria-multiline="true"></v-textarea>
+            <v-textarea height="450px" v-model="contents" label="contents" type="text" :rows="16" :disabled="isDisabled" aria-multiline="true"></v-textarea>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -51,7 +51,10 @@ export default {
       'getSameUser',
       'getBoardTitle',
       'getBoardContents'
-    ])
+    ]),
+    isValidateBoardInfo: function () {
+      return this.board && this.title.trim() !== '' && this.contents.trim() !== ''
+    }
   },
   methods: {
     ...mapActions([
@@ -97,8 +100,12 @@ export default {
   },
   mounted () {
     this.getBoardAction(this.boardNo)
-    this.title = this.getBoardTitle
-    this.contents = this.getBoardContents
+  },
+  updated () {
+    if (this.title === '' && this.contents === '') {
+      this.title = this.getBoardTitle
+      this.contents = this.getBoardContents
+    }
   }
 }
 </script>

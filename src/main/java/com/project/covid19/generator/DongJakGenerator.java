@@ -50,7 +50,7 @@ public class DongJakGenerator extends MarkerGenerator {
                                 marker.setDescription("");
                                 KakaoUtil.searchUsePlace(marker);
 
-                                if(marker.getAddress() != null){
+                                if(!Util.isEmptyString(marker.getPositionX()) && !Util.isEmptyString(marker.getPositionY())){
                                     result.add(marker);
                                 }
                             }

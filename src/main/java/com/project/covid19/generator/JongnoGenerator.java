@@ -30,9 +30,6 @@ public class JongnoGenerator extends MarkerGenerator {
                 String locationName = details[0];
 
                 if(!Util.isEmptyString(locationName) && !locationName.contains("동선 공개하지 않음")){
-
-
-
                     if(!CrawlingUtil.isDuplicationMarker(result, locationName)){
 
                         Marker marker = new Marker();
@@ -60,7 +57,7 @@ public class JongnoGenerator extends MarkerGenerator {
                             marker.setDescription(details[1]);
                         }
 
-                        if(marker.getAddress() != null){
+                        if(!Util.isEmptyString(marker.getPositionX()) && !Util.isEmptyString(marker.getPositionY())){
                             result.add(marker);
                         }
                     }

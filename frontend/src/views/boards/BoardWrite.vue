@@ -12,7 +12,7 @@
           </v-card>
           <v-card-text>
             <v-text-field label="title" v-model="board.title" :rules="titleRule" type="text"></v-text-field>
-            <v-textarea height="400px" v-model="board.contents" label="contents" :rules="contentsRule" type="text" :rows="16"></v-textarea>
+            <v-textarea height="450px" v-model="board.contents" label="contents" :rules="contentsRule" type="text" :rows="16"></v-textarea>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -49,7 +49,7 @@ export default {
       'getLoginInfo'
     ]),
     isValidateBoardInfo: function () {
-      return this.board && this.board.title.trim() !== '' && this.board.contents !== ''
+      return this.board && this.board.title.trim() !== '' && this.board.contents.trim() !== ''
     }
   },
   methods: {

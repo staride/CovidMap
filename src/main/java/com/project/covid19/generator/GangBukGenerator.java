@@ -2,6 +2,7 @@ package com.project.covid19.generator;
 
 import com.project.covid19.Util.CrawlingUtil;
 import com.project.covid19.Util.KakaoUtil;
+import com.project.covid19.Util.Util;
 import com.project.covid19.constants.CrawlingConstants;
 import com.project.covid19.entity.CrawlingBoard;
 import com.project.covid19.entity.Marker;
@@ -34,7 +35,7 @@ public class GangBukGenerator extends MarkerGenerator {
                     marker.setDescription(details[1] + " " + details[2]);
                     KakaoUtil.searchUsePlace(marker);
 
-                    if(marker.getAddress() != null){
+                    if(!Util.isEmptyString(marker.getPositionX()) && !Util.isEmptyString(marker.getPositionY())){
                         result.add(marker);
                     }
                 }

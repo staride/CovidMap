@@ -34,7 +34,7 @@ public class Board {
     @Column(length = 200, nullable = false)
     private String writer;
 
-    @JsonFormat(pattern = "yyyy-mm-dd HH:MM:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(length = 50, nullable = false, columnDefinition = "timestamp default now()", name = "regdate")
     private Date regDate;
 

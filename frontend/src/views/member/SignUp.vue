@@ -14,8 +14,8 @@
                 <v-text-field label="id" v-model="info.id" :rules="idRules" :hint="idHint" :persistent-hint="true" @keyup="checkId" prepend-icon="mdi-account" type="text" :autofocus="true"></v-text-field>
                 <v-text-field label="password" v-model="info.password" :rules="passwordRules" prepend-icon="mdi-lock" type="password"></v-text-field>
                 <v-text-field label="nickName" v-model="info.nickName" :rules="nickNameRules" :hint="nickHint" :persistent-hint="true" @keyup="checkNickName" prepend-icon="mdi-contacts" type="text"></v-text-field>
-                <v-text-field label="phone" v-model="info.phone" :rules="phoneRules" prepend-icon="mdi-phone" type="text"></v-text-field>
-                <v-text-field label="email" v-model="info.email" :rules="emailRules" prepend-icon="mdi-email" type="text"></v-text-field>
+                <v-text-field label="phone" v-model="info.phone" :rules="phoneRules" :hint="phoneHint" prepend-icon="mdi-phone" type="text"></v-text-field>
+                <v-text-field label="email" v-model="info.email" :rules="emailRules" :hint="emailHint" prepend-icon="mdi-email" type="text"></v-text-field>
               </v-form>
             </v-card-text>
             <v-card-actions>
@@ -47,6 +47,8 @@ export default {
       },
       idHint: '',
       nickHint: '',
+      phoneHint: '',
+      emailHint: '',
       isCheckId: false,
       isCheckNickName: false
     }
@@ -60,14 +62,16 @@ export default {
       'emailRules'
     ]),
     isValidateMemberInfo: function () {
-      return this.info && this.info.password.trim() !== '' && (this.isCheckNickName && this.info.nickName.trim()) !== '' &&
-      this.info.phone.trim() !== '' && this.info.email.trim() !== '' && (this.isCheckId && this.info.id.trim() !== '')
+      // console.log('this.isCheckNickName : ' + this.isCheckNickName)
+      console.log('this.phoneHint.trim() : ' + this.phoneHint.trim())
+      console.log('this.isCheckNickName : ' + this.isCheckNickName)
+      return this.info && this.info.password.trim() !== '' && (this.isCheckNickName && this.info.nickName.trim() !== '') &&
+        (this.info.phone.trim() !== '' && /^\d{3}-\d{3,4}-\d{4}$/.test(this.info.phone.trim())) &&
+        (this.info.email.trim() !== '' && /.+@.+\..+/.test(this.info.email.trim())) && (this.isCheckId && this.info.id.trim() !== '')
     }
   },
   methods: {
     signUp: function () {
-      console.log('signUp signUp')
-
       if (this.isValidateMemberInfo) {
         axios.post('http://localhost:7777/member/register', this.info).then(res => {
           if (res.status === 200) {
@@ -84,7 +88,7 @@ export default {
           console.log(err)
         })
       } else {
-        console.log('check validDate Member Info')
+        alert('회원가입에 필요한 정보를 확인해 주세요')
       }
     },
     signUpCancel: function () {
@@ -92,7 +96,7 @@ export default {
     },
     checkId: function () {
       // console.log('call check id')
-      if (this.info.id.trim !== '') {
+      if (this.info.id.trim() !== '') {
         axios.get(`http://localhost:7777/member/checkid/${this.info.id}`).then(res => {
           if (res.status === 200) {
             if (res.data === 'Success') {
@@ -109,12 +113,13 @@ export default {
           console.log(err)
         })
       } else {
-        console.log('id is empty value')
+        this.isCheckId = false
+        // console.log('id is empty value')
       }
     },
     checkNickName: function () {
       // console.log('call check id')
-      if (this.info.id.trim !== '') {
+      if (this.info.nickName.trim() !== '') {
         axios.get(`http://localhost:7777/member/checknick/${this.info.nickName}`).then(res => {
           if (res.status === 200) {
             if (res.data === 'Success') {
@@ -124,6 +129,7 @@ export default {
               this.nickHint = '중복된 nickName 입니다. 다른 nickName을 사용해 주세요'
               this.isCheckNickName = false
             }
+            // console.log('check nick Name flag : ' + this.isCheckNickName)
           } else {
             console.log('status : ' + res.status + ', data : ' + res.data)
           }
@@ -131,7 +137,8 @@ export default {
           console.log(err)
         })
       } else {
-        console.log('id is empty value')
+        this.isCheckNickName = false
+        // console.log('id is empty value')
       }
     }
   }

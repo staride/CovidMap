@@ -58,7 +58,9 @@ public class SeoChoGenerator extends MarkerGenerator {
                         }
 
                         KakaoUtil.searchUseAddress(marker);
-                        result.add(marker);
+                        if(!Util.isEmptyString(marker.getPositionX()) && !Util.isEmptyString(marker.getPositionY())){
+                            result.add(marker);
+                        }
                     }
                 }
             }

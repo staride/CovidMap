@@ -49,7 +49,7 @@ public class DongDaeMunGenerator extends MarkerGenerator {
                                 marker.setConfirmDate(board.getConfirmDate());
                                 marker.setDescription(details[1]);
                                 KakaoUtil.searchUsePlace(marker);
-                                if(marker.getAddress() != null){
+                                if(!Util.isEmptyString(marker.getPositionX()) && !Util.isEmptyString(marker.getPositionY())){
                                     result.add(marker);
                                 }
                             }
@@ -61,6 +61,9 @@ public class DongDaeMunGenerator extends MarkerGenerator {
                             marker.setConfirmDate(board.getConfirmDate());
                             marker.setDescription(details[1]);
                             KakaoUtil.searchUsePlace(marker);
+                            if(!Util.isEmptyString(marker.getPositionX()) && !Util.isEmptyString(marker.getPositionY())){
+                                result.add(marker);
+                            }
                         }
                     }
                 }

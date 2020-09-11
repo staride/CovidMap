@@ -11,7 +11,8 @@ export default {
   ],
   phoneRules: [
     v => !!v || 'phone을 입력해 주세요.',
-    v => (v.trim() !== '') || 'phone을 입력해 주세요.'
+    v => (v.trim() !== '') || 'phone을 입력해 주세요.',
+    v => /^\d{3}-\d{3,4}-\d{4}$/.test(v) || 'phone 형식으로 작성해주세요. (000-0000-0000 or 000-000-0000)'
   ],
   emailRules: [
     v => !!v || '이메일을 작성해 주세요.',

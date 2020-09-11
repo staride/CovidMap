@@ -2,6 +2,7 @@ package com.project.covid19.generator;
 
 import com.project.covid19.Util.CrawlingUtil;
 import com.project.covid19.Util.KakaoUtil;
+import com.project.covid19.Util.Util;
 import com.project.covid19.constants.CrawlingConstants;
 import com.project.covid19.entity.CrawlingBoard;
 import com.project.covid19.entity.Marker;
@@ -60,7 +61,7 @@ public class GangDongGenerator extends MarkerGenerator {
                                         marker.setConfirmDate(board.getConfirmDate());
                                         marker.setLocationName(from);
                                         KakaoUtil.searchUsePlace(marker);
-                                        if(marker.getAddress() != null){
+                                        if(!Util.isEmptyString(marker.getPositionX()) && !Util.isEmptyString(marker.getPositionY())){
                                             result.add(marker);
                                         }
                                     }
@@ -70,7 +71,7 @@ public class GangDongGenerator extends MarkerGenerator {
                                         marker2.setConfirmDate(board.getConfirmDate());
                                         marker2.setLocationName(to);
                                         KakaoUtil.searchUsePlace(marker2);
-                                        if(marker2.getAddress() != null){
+                                        if(!Util.isEmptyString(marker2.getPositionX()) && !Util.isEmptyString(marker2.getPositionY())){
                                             result.add(marker2);
                                         }
                                     }

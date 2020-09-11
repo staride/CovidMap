@@ -2,6 +2,7 @@ package com.project.covid19.generator;
 
 import com.project.covid19.Util.CrawlingUtil;
 import com.project.covid19.Util.KakaoUtil;
+import com.project.covid19.Util.Util;
 import com.project.covid19.constants.CrawlingConstants;
 import com.project.covid19.entity.CrawlingBoard;
 import com.project.covid19.entity.Marker;
@@ -51,10 +52,10 @@ public class SeoDaeMunGenerator extends MarkerGenerator {
                         marker.setDescription(details[1] + " " + details[2]);
                         KakaoUtil.searchUsePlace(marker);
                         marker.setLocationName(locationName);
+                    }
 
-                        if (marker.getAddress() != null) {
-                            result.add(marker);
-                        }
+                    if(!Util.isEmptyString(marker.getPositionX()) && !Util.isEmptyString(marker.getPositionY())){
+                        result.add(marker);
                     }
                 }
             }

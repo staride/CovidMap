@@ -12,7 +12,7 @@
             <v-card-text>
               <v-form>
                 <v-text-field label="id" v-model="info.id" prepend-icon="mdi-account" type="text" :autofocus="true"></v-text-field>
-                <v-text-field label="Password" v-model="info.password" prepend-icon="mdi-lock" type="password"></v-text-field>
+                <v-text-field label="Password" v-model="info.password" prepend-icon="mdi-lock" type="password" @keyup.enter="signInAction(info)"></v-text-field>
               </v-form>
             </v-card-text>
             <v-card-actions>

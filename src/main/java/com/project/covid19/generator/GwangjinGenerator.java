@@ -57,7 +57,7 @@ public class GwangjinGenerator extends MarkerGenerator {
                         marker.setConfirmDate(board.getConfirmDate());
                         marker.setDescription(details[1] + " " + details[2]);
 
-                        if(marker.getAddress() != null){
+                        if(!Util.isEmptyString(marker.getPositionX()) && !Util.isEmptyString(marker.getPositionY())){
                             result.add(marker);
                         }
                     }

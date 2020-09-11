@@ -23,23 +23,23 @@ export default {
         axios.get(`http://localhost:7777/member/getLoginInfo/${data.id}`).then(res => {
           if (res.status === 200 && res.data !== null) {
             commit(SET_LOGIN_INFO, res.data)
-            alert('로그인 성공')
+            // alert('로그인 성공')
             router.go(-1)
           } else {
             console.log('status : ' + res.status + ', data : ' + res.data)
-            alert('로그인 실패')
+            alert('아이디와 패스워드를 확인해 주세요')
           }
         }).catch(err => {
           console.log(err)
-          alert('로그인 실패')
+          alert('아이디와 패스워드를 확인해 주세요')
         })
       } else {
         console.log('status : ' + res.status + ', data : ' + res.data)
-        alert('로그인 실패')
+        alert('아이디와 패스워드를 확인해 주세요')
       }
     }).catch(err => {
       console.log(err)
-      alert('로그인 실패')
+      alert('아이디와 패스워드를 확인해 주세요')
     })
   },
   logoutAction: function ({ commit }) {
@@ -63,6 +63,5 @@ export default {
     }).catch(err => {
       console.log(err)
     })
-    return Promise.resolve()
   }
 }

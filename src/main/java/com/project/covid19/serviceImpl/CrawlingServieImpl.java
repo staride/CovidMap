@@ -37,16 +37,14 @@ public class CrawlingServieImpl implements CrawlingService {
         if(generator != null){
             AreaCount count = countrepo.findByAreaName(type);
             long webcount = CrawlingUtil.getCountFromWeb("https://www.seoul.go.kr/coronaV/coronaStatus.do", type);
-            int markersize = repo.findByAddrDepTwo(type).size();
 
-            if(count == null || markersize > 0 || count.getCount() < webcount){
+            if(count == null || count.getCount() < webcount){
                 if(count == null){
                     count = new AreaCount();
                     count.setAreaName(type);
                     count.setCount(webcount);
                     count.setLastUpdateDate(new Date());
-                }else if(count != null && count.getCount() < webcount){
-                    count = countrepo.findByAreaName(type);
+                }else if(count != null){
                     count.setCount(webcount);
                     count.setLastUpdateDate(new Date());
                 }

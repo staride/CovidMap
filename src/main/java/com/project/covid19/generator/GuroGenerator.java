@@ -72,7 +72,7 @@ public class GuroGenerator extends MarkerGenerator {
                             marker.setDescription(details[1]);
                         }
 
-                        if(marker.getAddress() != null){
+                        if(!Util.isEmptyString(marker.getPositionX()) && !Util.isEmptyString(marker.getPositionY())){
                             result.add(marker);
                         }
                     }

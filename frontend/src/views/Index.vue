@@ -12,7 +12,7 @@
                 <v-select class="ma-0 pa-0" v-model="selectItem" :items="items" @change="changeRadius" :hide-details="true"/>
               </div>
               <div class="my-0 mr-0 ml-2 pa-0" id="searchDiv">
-                <v-text-field class="ma-0 pa-0" label="장소 입력" v-model="searchText" type="text" single-line />
+                <v-text-field class="ma-0 pa-0" label="장소 입력" v-model="searchText" type="text" @keyup.enter="searchPlace()" single-line />
               </div>
               <div class="my-0 mr-0 ml-2 pa-0" id="searchBtnDiv">
                 <v-btn class="ma-0 pa-0" text color="black" @click="searchPlace()">검색</v-btn>
@@ -176,7 +176,6 @@ export default {
     setMarker: function (type) {
       axios.get(`http://localhost:7777/craw/${type}`).then(res => {
         const len = res.data.length
-        const geocoder = new window.kakao.maps.services.Geocoder()
         const markers = this.markers
         const setViewMarker = this.setViewMarker
         const getMarker = this.getNewMarker
@@ -185,16 +184,12 @@ export default {
         for (let i = 0; i < len; i++) {
           const data = res.data[i]
           // console.log('name : ' + data.locationName)
-          geocoder.addressSearch(data.address, function (result, status) {
-            if (status === window.kakao.maps.services.Status.OK) {
-              const position = new window.kakao.maps.LatLng(result[0].y, result[0].x)
-              const marker = getMarker(position)
+          const position = new window.kakao.maps.LatLng(data.positionX, data.positionY)
+          const marker = getMarker(position)
 
-              marker.setVisible(false)
-              setViewMarker(marker)
-              markers.push(marker)
-            }
-          })
+          marker.setVisible(false)
+          setViewMarker(marker)
+          markers.push(marker)
         }
       }).catch(err => {
         console.log(err)
@@ -233,60 +228,64 @@ export default {
       this.circle.setPosition(position)
     },
     searchPlace: function () {
-      const places = new window.kakao.maps.services.Places()
-      const map = this.map
+      if (this.searchText.trim() !== '') {
+        const places = new window.kakao.maps.services.Places()
+        const map = this.map
 
-      const setMarker = this.setMarker
-      const setCenterMarkerPosition = this.setCenterMarkerPosition
-      const setCirclePosition = this.setCirclePosition
-      const getLoginId = this.getLoginId
+        const setMarker = this.setMarker
+        const setCenterMarkerPosition = this.setCenterMarkerPosition
+        const setCirclePosition = this.setCirclePosition
+        const getLoginId = this.getLoginId
 
-      const store = this.$store
+        const store = this.$store
 
-      places.keywordSearch(this.searchText, function (result, status) {
-        if (status === window.kakao.maps.services.Status.OK) {
-          console.log(result)
+        places.keywordSearch(this.searchText, function (result, status) {
+          if (status === window.kakao.maps.services.Status.OK) {
+            console.log(result)
 
-          const len = result.length
-          let type = null
-          let x = -1
-          let y = -1
+            const len = result.length
+            let type = null
+            let x = -1
+            let y = -1
 
-          for (let i = 0; i < len; i++) {
-            const address = result[i].road_address_name
+            for (let i = 0; i < len; i++) {
+              const address = result[i].road_address_name
 
-            if (address.split(' ')[0] === ('서울')) {
-              type = address.split(' ')[0]
-              x = result[i].y
-              y = result[i].x
-              break
+              if (address.split(' ')[0] === ('서울')) {
+                type = address.split(' ')[1]
+                x = result[i].y
+                y = result[i].x
+                break
+              }
+            }
+
+            if (type === null) {
+              alert('검색범위는 서울내로 한정합니다')
+            } else {
+              const position = new window.kakao.maps.LatLng(x, y)
+              map.panTo(position)
+
+              setCenterMarkerPosition(position)
+              setCirclePosition(position)
+              setMarker(type)
+
+              const id = getLoginId
+              if (id != null) {
+                store.commit(SET_LOGIN_LOACTION_XY, { x: x, y: y })
+                axios.put(`http://localhost:7777/member/coordinate/${id}`, { x: x, y: y }).then(res => {
+                  if (res.status === 200) {
+                    console.log(res)
+                  }
+                }).catch(err => {
+                  console.log(err)
+                })
+              }
             }
           }
-
-          if (type === null) {
-            alert('검색범위는 서울내로 한정합니다')
-          } else {
-            const position = new window.kakao.maps.LatLng(x, y)
-            map.panTo(position)
-
-            setCenterMarkerPosition(position)
-            setCirclePosition(position)
-            setMarker(type)
-
-            const id = getLoginId
-            if (id != null) {
-              store.commit(SET_LOGIN_LOACTION_XY, { x: x, y: y })
-              axios.put(`http://localhost:7777/member/coordinate/${id}`, { x: x, y: y }).then(res => {
-                if (res.status === 200) {
-                  console.log(res)
-                }
-              }).catch(err => {
-                console.log(err)
-              })
-            }
-          }
-        }
-      })
+        })
+      } else {
+        alert('찾으려는 장소를 입력하세요')
+      }
     }
   },
   mounted: function () {

@@ -26,9 +26,11 @@ axios.interceptors.request.use(function (config) {
     const { exp } = decode(accessToken)
     if (Date.now() >= exp * 1000) {
       const refreshToken = cookies.get('refresh')
+      // console.log('before access token : ' + axios.defaults.headers.common.Authorization)
       axios.defaults.headers.common.Authorization = `Bearer ${refreshToken}`
       axios.post('http://localhost:7777/refreshToken').then(res => {
         if (res.status === 200) {
+          // console.log('after access token : ' + res.data.jwt.access_token)
           const token = res.data.jwt.access_token
           store.commit(SET_AUTH_TOKEN, token)
         } else {

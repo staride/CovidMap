@@ -36,7 +36,7 @@ public class ValidatedUtil {
     public static boolean validateModifyBoardInfo(Board board){
         boolean result = false;
 
-        if(board != null && !Util.isEmptyString(board.getTitle().trim()) && !Util.isEmptyString(board.getWriter().trim())){
+        if(board != null && !Util.isEmptyString(board.getTitle().trim()) && !Util.isEmptyString(board.getContents().trim())){
             result = true;
         }
 
