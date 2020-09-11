@@ -50,7 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/member/register").permitAll()
                 .antMatchers(HttpMethod.GET, "/member/checkid/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/member/checknick/{nickName}").permitAll()
-                .antMatchers(HttpMethod.POST, "/refreshToken").permitAll()
                 .antMatchers(HttpMethod.POST, SecurityConstants.AUTH_LOGIN_URL).permitAll()
                 .antMatchers("/craw/**").permitAll()
                 .anyRequest().authenticated();

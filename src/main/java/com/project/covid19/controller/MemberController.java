@@ -1,5 +1,6 @@
 package com.project.covid19.controller;
 
+import com.project.covid19.Util.Util;
 import com.project.covid19.entity.Member;
 import com.project.covid19.Util.ValidatedUtil;
 import com.project.covid19.service.MemberService;
@@ -31,7 +32,7 @@ public class MemberController {
 
         String message = null;
 
-        if(!(id == null || id.trim().isEmpty())){
+        if(!Util.isEmptyString(id)){
             if(service.checkId(id)){
                 message = "Success";
             }else{
@@ -51,7 +52,7 @@ public class MemberController {
 
         String message = null;
 
-        if(!(nickName == null || nickName.trim().isEmpty())){
+        if(!Util.isEmptyString(nickName)){
             if(service.checkNickName(nickName)){
                 message = "Success";
             }else{
@@ -70,9 +71,7 @@ public class MemberController {
         log.info("register() : data - " + member);
         String message = null;
 
-        boolean isvalid = ValidatedUtil.validateRegisterMemberInfo(member);
-
-        if(isvalid){
+        if(ValidatedUtil.validateRegisterMemberInfo(member)){
 
             member.setPassword(encoder.encode(member.getPassword()));
 
@@ -93,14 +92,16 @@ public class MemberController {
     public ResponseEntity<Member> getLoginInfo(@PathVariable String id){
 
         log.info("getLoginInfo() : id - " + id);
-
         Member member = null;
-        member = service.getLoginInfo(id);
 
-        if(member != null){
-            member.setPassword("");
-            member.setRefreshToken("");
-            return new ResponseEntity<Member>(member, HttpStatus.OK);
+        if(!Util.isEmptyString(id.trim())){
+            member = service.getLoginInfo(id);
+
+            if(member != null){
+                member.setPassword("");
+                member.setRefreshToken("");
+                return new ResponseEntity<Member>(member, HttpStatus.OK);
+            }
         }
 
         return new ResponseEntity<Member>(member, HttpStatus.BAD_REQUEST);
@@ -111,9 +112,11 @@ public class MemberController {
         log.info("updateUserCoordinate() : id - " + id + ", data - " + data);
         String message = "Fail";
 
-        if(service.updateUserCoordinate(id, data)){
-            message = "Success";
-            return new ResponseEntity<String>(message, HttpStatus.OK);
+        if(!Util.isEmptyString(id) && !Util.isEmptyString(data)){
+            if(service.updateUserCoordinate(id, data)){
+                message = "Success";
+                return new ResponseEntity<String>(message, HttpStatus.OK);
+            }
         }
 
         return new ResponseEntity<String>(message, HttpStatus.BAD_REQUEST);

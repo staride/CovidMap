@@ -8,11 +8,11 @@ public class ValidatedUtil {
     public static boolean validateRegisterMemberInfo(Member member){
         boolean result = false;
 
-        if(member != null && !Util.isEmptyString(member.getId()) &&
-           !Util.isEmptyString(member.getPassword()) &&
-           !Util.isEmptyString(member.getNickName()) &&
-           !Util.isEmptyString(member.getPhone()) &&
-           !Util.isEmptyString(member.getEmail())){
+        if(member != null && !Util.isEmptyString(member.getId().trim()) &&
+           !Util.isEmptyString(member.getPassword().trim()) &&
+           !Util.isEmptyString(member.getNickName().trim()) &&
+           !Util.isEmptyString(member.getPhone().trim()) &&
+           !Util.isEmptyString(member.getEmail().trim())){
 
             result = true;
         }
@@ -23,9 +23,9 @@ public class ValidatedUtil {
     public static boolean validateRegisterBoardInfo(Board board){
         boolean result = false;
 
-        if(board != null && !Util.isEmptyString(board.getTitle()) &&
-           !Util.isEmptyString(board.getContents()) &&
-           !Util.isEmptyString(board.getWriter())){
+        if(board != null && !Util.isEmptyString(board.getTitle().trim()) &&
+           !Util.isEmptyString(board.getContents().trim()) &&
+           !Util.isEmptyString(board.getWriter().trim())){
 
             result = true;
         }
@@ -33,4 +33,13 @@ public class ValidatedUtil {
         return result;
     }
 
+    public static boolean validateModifyBoardInfo(Board board){
+        boolean result = false;
+
+        if(board != null && !Util.isEmptyString(board.getTitle().trim()) && !Util.isEmptyString(board.getWriter().trim())){
+            result = true;
+        }
+
+        return result;
+    }
 }

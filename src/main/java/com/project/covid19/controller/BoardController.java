@@ -56,13 +56,19 @@ public class BoardController {
     @GetMapping("/{boardNo}")
     public ResponseEntity<Board> readByBoardNo(@PathVariable Long boardNo){
         log.info("readByBoardNo() : data - " + boardNo);
-        Board board = service.readByBoardNo(boardNo);
+        Board board = null;
 
-        if(board != null){
-            return new ResponseEntity<Board>(board, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<Board>(board, HttpStatus.NO_CONTENT);
+        if(boardNo != null && boardNo > 0){
+            board = service.readByBoardNo(boardNo);
+
+            if(board != null){
+                return new ResponseEntity<Board>(board, HttpStatus.OK);
+            }else{
+                return new ResponseEntity<Board>(board, HttpStatus.NO_CONTENT);
+            }
         }
+
+        return new ResponseEntity<Board>(board, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/{boardNo}")
@@ -70,9 +76,11 @@ public class BoardController {
         log.info("removeBoard() : data - " + boardNo);
         String message = null;
 
-        if(service.removeBoard(boardNo)){
-            message = "Success";
-            return new ResponseEntity<String>(message, HttpStatus.OK);
+        if(boardNo != null && boardNo > 0){
+            if(service.removeBoard(boardNo)){
+                message = "Success";
+                return new ResponseEntity<String>(message, HttpStatus.OK);
+            }
         }
 
         message = "fail";
@@ -80,15 +88,19 @@ public class BoardController {
     }
 
     @PutMapping("/{boardNo}")
-    public ResponseEntity<String> modifyBoard(@PathVariable long boardNo, @RequestBody @Validated Board board){
+    public ResponseEntity<String> modifyBoard(@PathVariable Long boardNo, @RequestBody @Validated Board board){
         log.info("modifyBoard() : boardNo - " + boardNo);
         log.info("modifyBoard() : Board - " + board);
-        board.setBoardNo(boardNo);
+
         String message = null;
 
-        if(service.modifyBoard(board)){
-            message = "Success";
-            return new ResponseEntity<String>(message, HttpStatus.OK);
+        if(ValidatedUtil.validateModifyBoardInfo(board) && boardNo != null && boardNo > 0){
+            board.setBoardNo(boardNo);
+
+            if(service.modifyBoard(board)){
+                message = "Success";
+                return new ResponseEntity<String>(message, HttpStatus.OK);
+            }
         }
 
         message = "fail";

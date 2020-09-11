@@ -30,7 +30,7 @@ public class CrawlingContainer {
         List<Marker> list = null;
         try {
 
-            if(!Util.isEmptyString(type)){
+            if(!Util.isEmptyString(type.trim())){
                 list = service.getMarkersList(type);
                 return new ResponseEntity<List<Marker>>(list, HttpStatus.OK);
             }
