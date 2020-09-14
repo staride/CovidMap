@@ -1,7 +1,9 @@
 <template>
   <v-app-bar app v-bind:height="headerHeight" flat dark>
     <div class="header-div-logo">
-      <v-img :contain="true" max-width="200px" max-height="100px" height="100px" src="@/assets/logo.png" position="left center"/>
+      <v-btn max-width="200px" max-height="100px" height="100px" @click="logClickEvent">
+        <v-img :contain="true" max-width="200px" max-height="100px" height="100px" src="@/assets/logo.png" position="left center"/>
+      </v-btn>
     </div>
     <div class="header-div-title">
       <v-toolbar-title position="center center">COVID19 MAP</v-toolbar-title>
@@ -19,6 +21,11 @@ export default {
       type: Number,
       required: true,
       default: 120
+    }
+  },
+  methods: {
+    logClickEvent: function () {
+      this.$router.push({ name: 'Index' })
     }
   },
   computed: {

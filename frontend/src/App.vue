@@ -62,23 +62,12 @@ export default {
         width: this.getRouterViewWidth + 'px',
         height: this.getRouterViewHeight + 'px'
       }
-
-      // console.log('contentsViewStyle height : ' + this.contentsViewStyle.height)
-      // console.log('routerViewStyle width : ' + this.routerViewStyle.width)
-      // console.log('routerViewStyle height : ' + this.routerViewStyle.height)
     }
   },
-  // resize 이벤트 등록
   mounted: function () {
-    // console.log('contentsStyle height : ' + this.contentsStyle.height)
     this.$nextTick(() => {
       this.onResize()
-      window.addEventListener('resize', this.onResize)
     })
-  },
-  // resize 이벤트 해제
-  beforeDestroy: function () {
-    window.removeEventListener('resize', this.onResize)
   }
 }
 </script>
