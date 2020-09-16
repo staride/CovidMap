@@ -11,8 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 @Log
 public class KakaoUtil {

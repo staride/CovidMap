@@ -17,7 +17,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +27,7 @@ import java.util.HashMap;
 @RestController
 public class RefreshTokenController {
 
-    @PostMapping("/refreshToken")
+    @PostMapping(SecurityConstants.REFRESH_TOKEN_URL)
     public ResponseEntity<String> refreshToken(HttpServletRequest request){
         String message = "Fail";
 

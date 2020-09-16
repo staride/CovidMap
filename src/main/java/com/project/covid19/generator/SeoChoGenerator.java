@@ -1,6 +1,5 @@
 package com.project.covid19.generator;
 
-import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import com.project.covid19.Util.CrawlingUtil;
 import com.project.covid19.Util.KakaoUtil;
 import com.project.covid19.Util.Util;

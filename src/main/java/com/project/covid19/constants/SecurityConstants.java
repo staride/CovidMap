@@ -2,6 +2,7 @@ package com.project.covid19.constants;
 
 public final class SecurityConstants {
     public static final String AUTH_LOGIN_URL = "/api/authenticate";
+    public static final String REFRESH_TOKEN_URL = "/api/refreshToken";
 
     // http://www.allkeysgenerator.com
     public static final String JWT_SECRET = "n2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf";

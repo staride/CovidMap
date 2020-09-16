@@ -43,14 +43,14 @@ dependencies {
 
 	compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
 
-	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
-	compile group: 'commons-io', name: 'commons-io', version: '2.7'
+	compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
