@@ -53,7 +53,7 @@ export default {
       'getBoardContents'
     ]),
     isValidateBoardInfo: function () {
-      return this.board && this.title.trim() !== '' && this.contents.trim() !== ''
+      return this.title.trim() !== '' && this.contents.trim() !== ''
     }
   },
   methods: {
@@ -71,18 +71,22 @@ export default {
       }
     },
     modifyBoard: function () {
-      const { title, contents } = { title: this.title, contents: this.contents }
-      // console.log('modifyBoard() data - boardNo : ' + this.boardNo)
-      axios.put(`http://localhost:7777/board/${this.boardNo}`, { title, contents }).then(res => {
-        if (res.status === 200 && res.data === 'Success') {
-          alert('글 수정 성공')
-        } else {
-          alert('글 수정 실패')
-        }
-        router.push({ name: 'BoardMain' })
-      }).catch(err => {
-        console.log(err)
-      })
+      if (this.isValidateBoardInfo) {
+        const { title, contents } = { title: this.title, contents: this.contents }
+        // console.log('modifyBoard() data - boardNo : ' + this.boardNo)
+        axios.put(`http://localhost:7777/board/${this.boardNo}`, { title, contents }).then(res => {
+          if (res.status === 200 && res.data === 'Success') {
+            alert('글 수정 성공')
+          } else {
+            alert('글 수정 실패')
+          }
+          router.push({ name: 'BoardMain' })
+        }).catch(err => {
+          console.log(err)
+        })
+      } else {
+        alert('Title과 contents를 확인해주세요')
+      }
     },
     removeBoard: function () {
       // console.log('removeBoard() data - boardNo : ' + this.boardNo)

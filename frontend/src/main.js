@@ -21,14 +21,14 @@ Vue.config.productionTip = false
 
 axios.interceptors.request.use(function (config) {
   // console.log('request interceptors')
-  if (cookies.isKey('jwt') && cookies.isKey('refresh') && config.url !== 'http://localhost:7777/refreshToken') {
+  if (cookies.isKey('jwt') && cookies.isKey('refresh') && config.url !== 'http://localhost:7777/api/refreshToken') {
     const accessToken = cookies.get('jwt')
     const { exp } = decode(accessToken)
     if (Date.now() >= exp * 1000) {
       const refreshToken = cookies.get('refresh')
       // console.log('before access token : ' + axios.defaults.headers.common.Authorization)
       axios.defaults.headers.common.Authorization = `Bearer ${refreshToken}`
-      axios.post('http://localhost:7777/refreshToken').then(res => {
+      axios.post('http://localhost:7777/api/refreshToken').then(res => {
         if (res.status === 200) {
           // console.log('after access token : ' + res.data.jwt.access_token)
           const token = res.data.jwt.access_token
