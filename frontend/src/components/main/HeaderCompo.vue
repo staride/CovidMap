@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app v-bind:height="headerHeight" flat dark>
     <div class="header-div-logo">
-      <v-btn max-width="200px" max-height="100px" height="100px" @click="logClickEvent">
+      <v-btn max-width="200px" max-height="100px" height="100px" @click="logClickEvent" :depressed="true">
         <v-img :contain="true" max-width="200px" max-height="100px" height="100px" src="@/assets/logo.png" position="left center"/>
       </v-btn>
     </div>
