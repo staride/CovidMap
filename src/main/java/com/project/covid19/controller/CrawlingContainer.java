@@ -24,6 +24,7 @@ public class CrawlingContainer {
     CrawlingService service;
 
     @GetMapping("/{type}")
+    @Async
     public ResponseEntity<List<Marker>> getMarkersList(@PathVariable String type){
         log.info("getMarkersInfoList() : type - " + type);
         List<Marker> list = null;

@@ -173,7 +173,7 @@ export default {
         this.markers = []
       }
     },
-    setMarker: function (type) {
+    setMarker: async function (type) {
       axios.get(`http://localhost:7777/craw/${type}`).then(res => {
         const len = res.data.length
         const markers = this.markers
