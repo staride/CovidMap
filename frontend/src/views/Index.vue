@@ -82,6 +82,7 @@ export default {
     },
     getMap: function (position) {
       let map
+      const event = this.changeRadius
 
       if (this.map === null) {
         const container = document.getElementById('map')
@@ -95,6 +96,11 @@ export default {
       } else {
         map = this.map
       }
+
+      window.kakao.maps.event.removeListener(map, 'zoom_changed')
+      window.kakao.maps.event.addListener(map, 'zoom_changed', function () {
+        event()
+      })
 
       return map
     },
@@ -175,6 +181,7 @@ export default {
     },
     setMarker: async function (type) {
       axios.get(`http://localhost:7777/craw/${type}`).then(res => {
+        console.log('craw result : ' + res.data)
         const len = res.data.length
         const markers = this.markers
         const setViewMarker = this.setViewMarker
@@ -241,7 +248,7 @@ export default {
 
         places.keywordSearch(this.searchText, function (result, status) {
           if (status === window.kakao.maps.services.Status.OK) {
-            console.log(result)
+            // console.log(result)
 
             const len = result.length
             let type = null

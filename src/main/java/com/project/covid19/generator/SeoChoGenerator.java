@@ -32,7 +32,8 @@ public class SeoChoGenerator extends MarkerGenerator {
             for(int i=0;i<len;i++){
                 String data = datas[i];
                 if(!Util.isEmptyString(data) && Pattern.matches("^.*(\\D*[(]+.{2,10}[)]+).*$", data) && !data.contains("추정")
-                   && !data.contains("접촉자") && !data.contains("접촉자") && !data.contains("확진") && !data.contains("자택")){
+                   && !data.contains("접촉자") && !data.contains("접촉자") && !data.contains("확진") && !data.contains("자택")
+                   && !data.contains("사무실")){
                     Matcher matcher = Pattern.compile("(\\D*[(]+.{2,10}[)]+)").matcher(data);
                     String locationName = null;
                     if(matcher.find()){
