@@ -113,6 +113,9 @@ public class CrawlingUtil {
             options.addArguments("--start-maximized");
             options.addArguments("--disable-popup-blocking");
             options.addArguments("--disable-default-apps");
+            options.addArguments("--headless");
+            options.addArguments("--no-sandbox");
+
 
             return new ChromeDriver(options);
     }
