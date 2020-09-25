@@ -236,6 +236,7 @@ export default {
     },
     searchPlace: function () {
       if (this.searchText.trim() !== '') {
+        this.removeMarkers()
         const places = new window.kakao.maps.services.Places()
         const map = this.map
 
