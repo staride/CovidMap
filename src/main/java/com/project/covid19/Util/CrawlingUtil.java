@@ -105,7 +105,7 @@ public class CrawlingUtil {
     }
 
     public static ChromeDriver intSelenium(){
-            Path path = Paths.get(System.getProperty("user.dir"), "src/main/resources/driver/chromedriver");
+            Path path = Paths.get(System.getProperty("user.dir"), "./chromedriver");
 
             System.setProperty("webdriver.chrome.driver", path.toString());
 
