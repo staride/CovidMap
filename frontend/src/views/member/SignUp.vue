@@ -73,7 +73,7 @@ export default {
   methods: {
     signUp: function () {
       if (this.isValidateMemberInfo) {
-        axios.post('http://localhost:7777/member/register', this.info).then(res => {
+        axios.post('http://kainTime.iptime.org:7777/member/register', this.info).then(res => {
           if (res.status === 200) {
             if (res.data === 'Success') {
               alert('회원가입 성공')
@@ -97,7 +97,7 @@ export default {
     checkId: function () {
       // console.log('call check id')
       if (this.info.id.trim() !== '') {
-        axios.get(`http://localhost:7777/member/checkid/${this.info.id}`).then(res => {
+        axios.get(`http://kainTime.iptime.org:7777/member/checkid/${this.info.id}`).then(res => {
           if (res.status === 200) {
             if (res.data === 'Success') {
               this.idHint = '이 id는 사용이 가능합니다.'
@@ -120,7 +120,7 @@ export default {
     checkNickName: function () {
       // console.log('call check id')
       if (this.info.nickName.trim() !== '') {
-        axios.get(`http://localhost:7777/member/checknick/${this.info.nickName}`).then(res => {
+        axios.get(`http://kainTime.iptime.org:7777/member/checknick/${this.info.nickName}`).then(res => {
           if (res.status === 200) {
             if (res.data === 'Success') {
               this.nickHint = '이 nickName은 사용이 가능합니다.'

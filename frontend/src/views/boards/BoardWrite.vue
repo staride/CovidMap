@@ -66,7 +66,7 @@ export default {
           writer: info.nickName
         }
 
-        axios.post('http://localhost:7777/board', { title, contents, writer }).then(res => {
+        axios.post('http://kainTime.iptime.org:7777/board', { title, contents, writer }).then(res => {
           if (res.status === 200 && res.data === 'Success') {
             alert('등록 성공')
           } else {

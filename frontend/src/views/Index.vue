@@ -180,7 +180,7 @@ export default {
       }
     },
     setMarker: async function (type) {
-      axios.get(`http://localhost:7777/craw/${type}`).then(res => {
+      axios.get(`http://kainTime.iptime.org:7777/craw/${type}`).then(res => {
         console.log('craw result : ' + res.data)
         const len = res.data.length
         const markers = this.markers
@@ -280,7 +280,7 @@ export default {
               const id = getLoginId
               if (id != null) {
                 store.commit(SET_LOGIN_LOACTION_XY, { x: x, y: y })
-                axios.put(`http://localhost:7777/member/coordinate/${id}`, { x: x, y: y }).then(res => {
+                axios.put(`http://kainTime.iptime.org:7777/member/coordinate/${id}`, { x: x, y: y }).then(res => {
                   if (res.status === 200) {
                     console.log(res)
                   }

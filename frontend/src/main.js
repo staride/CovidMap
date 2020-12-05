@@ -21,14 +21,14 @@ Vue.config.productionTip = false
 
 axios.interceptors.request.use(function (config) {
   // console.log('request interceptors')
-  if (cookies.isKey('jwt') && cookies.isKey('refresh') && config.url !== 'http://localhost:7777/api/refreshToken') {
+  if (cookies.isKey('jwt') && cookies.isKey('refresh') && config.url !== 'http://kainTime.iptime.org:7777/api/refreshToken') {
     const accessToken = cookies.get('jwt')
     const { exp } = decode(accessToken)
     if (Date.now() >= exp * 1000) {
       const refreshToken = cookies.get('refresh')
       // console.log('before access token : ' + axios.defaults.headers.common.Authorization)
       axios.defaults.headers.common.Authorization = `Bearer ${refreshToken}`
-      axios.post('http://localhost:7777/api/refreshToken').then(res => {
+      axios.post('http://kainTime.iptime.org:7777/api/refreshToken').then(res => {
         if (res.status === 200) {
           // console.log('after access token : ' + res.data.jwt.access_token)
           const token = res.data.jwt.access_token
@@ -53,7 +53,7 @@ function init () {
     const accessToken = cookies.get('jwt')
     const usuerid = cookies.get('usuerid')
     store.commit(SET_AUTH_TOKEN, accessToken)
-    axios.get(`http://localhost:7777/member/getLoginInfo/${usuerid}`).then(res => {
+    axios.get(`http://kainTime.iptime.org:7777/member/getLoginInfo/${usuerid}`).then(res => {
       if (res.status === 200 && res.data !== null) {
         store.commit(SET_LOGIN_INFO, res.data)
         // alert('로그인 성공')

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Log
 @RestController
 @RequestMapping("/member")
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = "http://kainTime.iptime.org:8080", allowedHeaders = "*")
 public class MemberController {
 
     @Autowired

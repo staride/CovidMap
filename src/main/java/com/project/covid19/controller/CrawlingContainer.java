@@ -17,7 +17,7 @@ import java.util.List;
 @Log
 @RestController
 @RequestMapping("/craw")
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = "http://kainTime.iptime.org:8080", allowedHeaders = "*")
 public class CrawlingContainer {
 
     @Autowired

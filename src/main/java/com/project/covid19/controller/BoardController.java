@@ -15,7 +15,7 @@ import java.util.List;
 @Log
 @RestController
 @RequestMapping("/board")
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = "http://kainTime.iptime.org:8080", allowedHeaders = "*")
 public class BoardController {
 
     @Autowired

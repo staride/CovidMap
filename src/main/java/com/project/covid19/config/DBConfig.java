@@ -15,8 +15,8 @@ public class DBConfig {
         dataSource.setUrl(
                 "jdbc:mysql://localhost:3306/covid19?serverTimezone=Asia/Seoul&useSSL=false"
         );
-        dataSource.setUsername("bitai");
-        dataSource.setPassword("456123");
+        dataSource.setUsername("");
+        dataSource.setPassword("");
         return dataSource;
     }
 }
