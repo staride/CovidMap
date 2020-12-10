@@ -1,6 +1,6 @@
 package com.project.covid19.serviceImpl;
 
-import com.project.covid19.Util.CrawlingUtil;
+import com.project.covid19.util.CrawlingUtil;
 import com.project.covid19.entity.AreaCount;
 import com.project.covid19.entity.CrawlingBoard;
 import com.project.covid19.entity.Marker;

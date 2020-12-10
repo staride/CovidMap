@@ -1,8 +1,8 @@
 package com.project.covid19.controller;
 
-import com.project.covid19.Util.Util;
+import com.project.covid19.util.Util;
 import com.project.covid19.entity.Member;
-import com.project.covid19.Util.ValidatedUtil;
+import com.project.covid19.util.ValidatedUtil;
 import com.project.covid19.service.MemberService;
 import lombok.extern.java.Log;
 

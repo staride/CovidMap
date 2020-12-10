@@ -1,4 +1,4 @@
-package com.project.covid19.Util;
+package com.project.covid19.util;
 
 import com.project.covid19.constants.SecurityConstants;
 import io.jsonwebtoken.Claims;

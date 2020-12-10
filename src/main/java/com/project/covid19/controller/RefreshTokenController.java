@@ -1,6 +1,6 @@
 package com.project.covid19.controller;
 
-import com.project.covid19.Util.Util;
+import com.project.covid19.util.Util;
 import com.project.covid19.component.ApplicationContextProvider;
 import com.project.covid19.constants.SecurityConstants;
 import com.project.covid19.entity.Member;
@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +26,7 @@ import java.util.HashMap;
 
 @Log
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:8080", allowedHeaders = "*")
 public class RefreshTokenController {
 
     @PostMapping(SecurityConstants.REFRESH_TOKEN_URL)

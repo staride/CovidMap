@@ -1,8 +1,8 @@
 package com.project.covid19.generator;
 
-import com.project.covid19.Util.CrawlingUtil;
-import com.project.covid19.Util.KakaoUtil;
-import com.project.covid19.Util.Util;
+import com.project.covid19.util.CrawlingUtil;
+import com.project.covid19.util.KakaoUtil;
+import com.project.covid19.util.Util;
 import com.project.covid19.constants.CrawlingConstants;
 import com.project.covid19.entity.CrawlingBoard;
 import com.project.covid19.entity.Marker;
@@ -11,7 +11,6 @@ import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Log

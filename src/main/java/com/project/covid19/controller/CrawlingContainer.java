@@ -1,6 +1,6 @@
 package com.project.covid19.controller;
 
-import com.project.covid19.Util.Util;
+import com.project.covid19.util.Util;
 import com.project.covid19.entity.Marker;
 import com.project.covid19.service.CrawlingService;
 import lombok.extern.java.Log;
@@ -8,7 +8,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

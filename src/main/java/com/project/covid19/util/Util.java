@@ -1,4 +1,4 @@
-package com.project.covid19.Util;
+package com.project.covid19.util;
 
 import lombok.extern.java.Log;
 import javax.servlet.http.HttpServletRequest;

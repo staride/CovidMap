@@ -7,7 +7,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.project.covid19.Util.Util;
+import com.project.covid19.util.Util;
 import com.project.covid19.component.ApplicationContextProvider;
 import com.project.covid19.constants.SecurityConstants;
 import com.project.covid19.entity.Member;

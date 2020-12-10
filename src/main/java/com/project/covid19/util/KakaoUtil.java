@@ -1,4 +1,4 @@
-package com.project.covid19.Util;
+package com.project.covid19.util;
 
 import com.project.covid19.constants.KakaoConstants;
 import com.project.covid19.entity.Marker;

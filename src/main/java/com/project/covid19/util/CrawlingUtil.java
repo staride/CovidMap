@@ -1,4 +1,4 @@
-package com.project.covid19.Util;
+package com.project.covid19.util;
 
 import com.project.covid19.constants.CrawTypeConstants;
 import com.project.covid19.constants.CrawlingConstants;
@@ -21,7 +21,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Log
 public class CrawlingUtil {
