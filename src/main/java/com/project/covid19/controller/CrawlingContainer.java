@@ -1,5 +1,6 @@
 package com.project.covid19.controller;
 
+import com.project.covid19.entity.CovidStatus;
 import com.project.covid19.util.Util;
 import com.project.covid19.entity.Marker;
 import com.project.covid19.service.CrawlingService;
@@ -38,5 +39,17 @@ public class CrawlingContainer {
         }
 
         return new ResponseEntity<List<Marker>>(list, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<CovidStatus> getCovidStatus(){
+
+        CovidStatus status = service.getCovidStatus();
+
+        if(status != null){
+            return new ResponseEntity<CovidStatus>(status, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<CovidStatus>(status, HttpStatus.BAD_REQUEST);
     }
 }
