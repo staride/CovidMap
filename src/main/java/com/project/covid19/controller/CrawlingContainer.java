@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,22 +24,15 @@ public class CrawlingContainer {
     @Autowired
     CrawlingService service;
 
-    @GetMapping("/{type}")
-    public ResponseEntity<List<Marker>> getMarkersList(@PathVariable String type){
-        log.info("getMarkersInfoList() : type - " + type);
-        List<Marker> list = null;
-        try {
+    @GetMapping("/markers")
+    public ResponseEntity<List<Marker>> getCovidMarker(){
+        List<Marker> result = service.getMarkersList();
 
-            if(!Util.isEmptyString(type.trim())){
-                list = service.getMarkersList(type);
-                return new ResponseEntity<List<Marker>>(list, HttpStatus.OK);
-            }
-
-        } catch (Exception e){
-            log.info(ExceptionUtils.getStackTrace(e));
+        if(result != null && !result.isEmpty()){
+            return new ResponseEntity<List<Marker>>(result, HttpStatus.OK);
         }
 
-        return new ResponseEntity<List<Marker>>(list, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<List<Marker>>(result, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/status")

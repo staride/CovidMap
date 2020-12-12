@@ -2,20 +2,18 @@ package com.project.covid19.serviceImpl;
 
 import com.project.covid19.entity.CovidStatus;
 import com.project.covid19.util.CrawlingUtil;
-import com.project.covid19.entity.AreaCount;
-import com.project.covid19.entity.CrawlingBoard;
 import com.project.covid19.entity.Marker;
-import com.project.covid19.repository.AreaCountRepository;
-import com.project.covid19.repository.MarkerRepository;
 import com.project.covid19.service.CrawlingService;
+import com.project.covid19.util.KakaoUtil;
 import lombok.extern.java.Log;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -23,62 +21,52 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class CrawlingServieImpl implements CrawlingService {
 
-    @Autowired
-    MarkerRepository repo;
-
-    @Autowired
-    AreaCountRepository countrepo;
-
     private String acc = "p.number";
     private String diff = "p.diff";
 
     @Override
-    public List<Marker> getMarkersList(String type){
-//        log.info("getMarkersList() : type - " + type);
-//        List<Marker> list = null;
-//
-//        MarkerGenerator generator = CrawlingUtil.getMarkerGenerator(type);
-//
-//        if(generator != null){
-//            AreaCount count = countrepo.findByAreaName(type);
-//            long webcount = CrawlingUtil.getCountFromWeb("https://www.seoul.go.kr/coronaV/coronaStatus.do", type);
-//
-//            if(count == null || count.getCount() < webcount){
-//                if(count == null){
-//                    count = new AreaCount();
-//                    count.setAreaName(type);
-//                    count.setCount(webcount);
-//                    count.setLastUpdateDate(new Date());
-//                }else if(count != null){
-//                    count.setCount(webcount);
-//                    count.setLastUpdateDate(new Date());
-//                }
-//
-//                ChromeDriver driver = CrawlingUtil.intSelenium();
-//                CrawlingUtil.seleniumConnectUrl(driver, "https://www.seoul.go.kr/coronaV/coronaStatus.do");
-////                CrawlingUtil.clickByClass(driver,"btn-tab2");
-//                CrawlingUtil.selectAera(driver,"select#status-searchArea", "select#status-searchArea>option[value="+type+"]");
-//                List<CrawlingBoard> data = CrawlingUtil.crawlingData(driver);
-//                CrawlingUtil.driverClose(driver);
-//
-//                list = generator.getMarkers(data);
-//
-//                if(list != null && list.size() > 0){
-//                    repo.deleteByAddrDepTwo(type);
-//                    repo.saveAll(list);
-//                }
-//
-//            }else{
-//                list = repo.findByAddrDepTwo(type);
-//            }
-//
-//            if(list == null || list.size() > 0){
-//                countrepo.save(count);
-//            }
-//        }
-//
-//        return list;
-        return null;
+    public List<Marker> getMarkersList(){
+        ArrayList<Marker> result = null;
+        ChromeDriver driver = null;
+
+        try{
+            result = new ArrayList<Marker>();
+            driver = CrawlingUtil.initSelenium();
+            CrawlingUtil.seleniumConnectUrl(driver, "http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=12&ncvContSeq=&contSeq=&board_id=&gubun=");
+
+            List<WebElement> trs = driver.findElementsByCssSelector("div.data_table>table>tbody>tr");
+            for(WebElement tr : trs){
+                List<WebElement> tds = tr.findElements(By.cssSelector("td"));
+
+                String data = tds.get(2).getText();
+
+                if(!data.contains("소재")){
+                    String address = data.substring(data.indexOf("서울특별시"), data.lastIndexOf(")"));
+                    if(address.matches(".*\\d.*")){
+                        Marker marker = new Marker();
+
+                        marker.setAddressSecond(tds.get(0).getText());
+                        marker.setLocationName(data.substring(0, data.indexOf("(")).trim());
+                        marker.setAddress(address);
+                        marker.setConfirmDate(tds.get(3).getText());
+                        marker.setDisinfect(tds.get(4).getText());
+
+                        KakaoUtil.searchUseAddress(marker);
+
+                        result.add(marker);
+                    }
+                }
+            }
+
+        }catch (Exception e){
+            log.info(e.getMessage());
+            e.printStackTrace();
+            result = null;
+        }finally {
+            CrawlingUtil.driverClose(driver);
+        }
+
+        return result;
     }
 
     @Override

@@ -6,6 +6,6 @@ import com.project.covid19.entity.Marker;
 import java.util.List;
 
 public interface CrawlingService {
-    public List<Marker> getMarkersList(String type);
+    public List<Marker> getMarkersList();
     public CovidStatus getCovidStatus();
 }

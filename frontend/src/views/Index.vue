@@ -2,24 +2,95 @@
   <v-main class="py-12">
     <v-container class="fill-height" fluid>
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="11" class="pa-0">
+        <v-col cols="4" md="12" class="pa-0">
           <v-card>
             <v-card-title>
               <v-spacer/>
-              COVID PATH MAP
+              COVID STATUS
               <v-spacer/>
-              <div class="ma-0 pa-0" id="selectDiv">
-                <v-select class="ma-0 pa-0" v-model="selectItem" :items="items" @change="changeRadius" :hide-details="true"/>
-              </div>
-              <div class="my-0 mr-0 ml-2 pa-0" id="searchDiv">
-                <v-text-field class="ma-0 pa-0" label="장소 입력" v-model="searchText" type="text" @keyup.enter="searchPlace()" single-line />
-              </div>
-              <div class="my-0 mr-0 ml-2 pa-0" id="searchBtnDiv">
-                <v-btn class="ma-0 pa-0" text color="black" @click="searchPlace()">검색</v-btn>
-              </div>
             </v-card-title>
             <v-card-text>
-              <div id="map" style="height: 520px"></div>
+              <div id="status" style="height: 100px">
+                <v-col cols="3" sm="3" md="2" class="text-center status-data" >
+                  <p>확진자</p>
+                  <p>{{covidStatus != null ? covidStatus.totalAcc : 0}}</p>
+                  <p v-bind:class="this.checkContainsStr(covidStatus != null ? covidStatus.totalDiff : '')">{{covidStatus != null ? covidStatus.totalDiff : '-'}}</p>
+                </v-col>
+                <v-col cols="3" sm="3" md="1" class="text-center status-data">
+                  <p>사망자</p>
+                  <p>{{covidStatus != null ? covidStatus.deathAcc : 0}}</p>
+                  <p v-bind:class="this.checkContainsStr(covidStatus != null ? covidStatus.deathDiff : '')">{{covidStatus != null ? covidStatus.deathDiff : '-'}}</p>
+                </v-col>
+                <v-col cols="3" sm="3" md="1" class="text-center status-data">
+                  <p>격리해제</p>
+                  <p>{{covidStatus != null ? covidStatus.freeAcc : 0}}</p>
+                  <p v-bind:class="this.checkContainsStr(covidStatus != null ? covidStatus.freeDiff : '')">{{covidStatus != null ? covidStatus.freeDiff : '-'}}</p>
+                </v-col>
+                <v-col cols="3" sm="3" md="2" class="text-center status-data">
+                  <p style="height: 44px">치명률</p>
+                  <p>{{covidStatus != null ? covidStatus.fatalityRate : '-'}}</p>
+                </v-col>
+                <v-col cols="4" sm="4" md="2" class="text-center status-data">
+                  <p>총검사자</p>
+                  <p>{{covidStatus != null ? covidStatus.totalInspectionAcc : 0}}</p>
+                  <p v-bind:class="this.checkContainsStr(covidStatus != null ? covidStatus.totalInspectionDiff : '')">{{covidStatus != null ? covidStatus.totalInspectionDiff : '-'}}</p>
+                </v-col>
+                <v-col cols="4" sm="4" md="2" class="text-center status-data">
+                  <p>검사중</p>
+                  <p>{{covidStatus != null ? covidStatus.inspectionAcc : 0}}</p>
+                  <p v-bind:class="this.checkContainsStr(covidStatus != null ? covidStatus.inspectionDiff : '')">{{covidStatus != null ? covidStatus.inspectionDiff : '-'}}</p>
+                </v-col>
+                <v-col cols="4" sm="4" md="2" class="text-center status-data">
+                  <p>결과음성</p>
+                  <p>{{covidStatus != null ? covidStatus.totalNegativeAcc : 0}}</p>
+                  <p v-bind:class="this.checkContainsStr(covidStatus != null ? covidStatus.totalNegativeDiff : '')">{{ covidStatus != null ? covidStatus.totalNegativeDiff : '-'}}</p>
+                </v-col>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row align="center" justify="center" class="mt-8 pa-0">
+        <v-col cols="3" md="8" class="pt-0 pr-0 pb-0">
+          <v-card>
+            <v-card-title>
+              <v-spacer/>
+              COVID MAP
+              <v-spacer/>
+            </v-card-title>
+            <v-card-text>
+              <div id="map" style="height: 325px"></div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="3" md="4" class="pt-0 pr-0 pb-0">
+          <v-card>
+            <v-card-title>
+              <v-spacer/>
+              Place List
+              <v-spacer/>
+            </v-card-title>
+            <v-card-text>
+              <div id="list" style="height: 325px; overflow: auto">
+                <div>
+                  <div style="display: inline-block;" class="place-width">
+                    장소명
+                  </div>
+                  <div style="display: inline-block;" class="place-width">
+                    확인일자
+                  </div>
+                  <div style="display: inline-block;" class="place-width">
+                    보러가기
+                  </div>
+                </div>
+                <div v-for="(marker, index) in covidMarkers" v-bind:key="index" class="maker-data" style="width: 100%" v-bind:class="checkCurrentIndex(index)">
+                  <div class="place-width">{{marker.locationName}}</div>
+                  <div class="place-width">{{marker.confirmDate}}</div>
+                  <div class="icon-width" v-on:click="updateMarker(index)">
+                    <v-img :contain="true" max-width="25px" max-height="25px" height="100px" src="@/assets/location.svg" position="center center" align="center" v-on:click="updateMarker(index)"/>
+                  </div>
+                </div>
+              </div>
             </v-card-text>
           </v-card>
         </v-col>
@@ -30,292 +101,145 @@
 
 <script>
 
-import postscribe from 'postscribe'
 import { mapGetters } from 'vuex'
 import axios from 'axios'
-import {
-  SET_LOGIN_LOACTION_XY
-} from '@/store/mutation-types.js'
 
 export default {
   name: 'Index',
   data: function () {
     return {
-      selectItem: 100,
-      items: [
-        { text: '100m', value: 100 },
-        { text: '200m', value: 200 },
-        { text: '300m', value: 300 }
-      ],
-      map: null,
-      markers: [],
-      centerMarker: null,
-      circle: null,
-      searchText: ''
+      covidStatus: null,
+      covidMarkers: null,
+      current: 0
     }
   },
   computed: {
     ...mapGetters([
-      'getLoginLocationX',
-      'getLoginLocationY',
       'getLoginId'
     ])
   },
   methods: {
-    initScript: function () {
-      // console.log('initScript')
-      let src = '<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=27182d803bc31145e52687dda5546c30&libraries=services"></scrip'
-      src = src + 't>'
-
-      const initFunction = this.initMap
-
-      postscribe(document.head, src, {
-        done: initFunction
-      })
-    },
-    initMap: function () {
-      // console.log('initMap')
-      this.getMap(this.getNewDefaultPosition())
-      this.getCenterMarker()
-      this.getCircle()
-      this.getMarkersFromAddress()
-    },
-    getMap: function (position) {
-      let map
-      const event = this.changeRadius
-
-      if (this.map === null) {
-        const container = document.getElementById('map')
-        const options = {
-          center: position,
-          level: 3
-        }
-
-        map = new window.kakao.maps.Map(container, options)
-        this.map = map
-      } else {
-        map = this.map
-      }
-
-      window.kakao.maps.event.removeListener(map, 'zoom_changed')
-      window.kakao.maps.event.addListener(map, 'zoom_changed', function () {
-        event()
-      })
-
-      return map
-    },
-    getNewDefaultPosition: function () {
-      return new window.kakao.maps.LatLng(this.getLoginLocationX, this.getLoginLocationY)
-    },
-    getCenterMarker: function () {
-      let center
-
-      if (this.centerMarker === null) {
-        center = new window.kakao.maps.Marker({
-          map: this.map,
-          position: this.getNewDefaultPosition()
-        })
-
-        this.centerMarker = center
-      } else {
-        center = this.centerMarker
-      }
-
-      return center
-    },
-    getNewMarker: function (position) {
-      const marker = new window.kakao.maps.Marker({
-        map: this.map,
-        position: position
-      })
-
-      return marker
-    },
-    getCircle: function () {
-      let circle = null
-
-      if (this.circle === null) {
-        circle = new window.kakao.maps.Circle({
-          center: this.getNewDefaultPosition(),
-          radius: this.selectItem,
-          strokeWeight: 2,
-          strokeColor: '#FF0000',
-          strokeOpacity: 0.8,
-          strokeStyle: 'dashed',
-          fillColor: '#00ECF4',
-          fillOpacity: 0.1
-        })
-
-        circle.setMap(this.map)
-        this.circle = circle
-      } else {
-        circle = this.circle
-      }
-
-      return circle
-    },
-    getMarkersFromAddress: function () {
-      const geocoder = new window.kakao.maps.services.Geocoder()
-      const position = this.centerMarker.getPosition()
-      const setMarker = this.setMarker
-      geocoder.coord2Address(position.getLng(), position.getLat(), function (result, status) {
-        if (status === window.kakao.maps.services.Status.OK) {
-          const address = result[0].address
-          if (address.region_1depth_name === '서울') {
-            const type = address.region_2depth_name
-            setMarker(type)
-          }
-        }
-      })
-    },
-    removeMarkers: function () {
-      const len = this.markers.length
-      if (len > 0) {
-        for (let i = 0; i < len; i++) {
-          const marker = this.markers[i]
-          marker.setMap(null)
-        }
-
-        this.markers = []
-      }
-    },
-    setMarker: async function (type) {
-      axios.get(`http://kainTime.iptime.org:7777/craw/${type}`).then(res => {
-        console.log('craw result : ' + res.data)
-        const len = res.data.length
-        const markers = this.markers
-        const setViewMarker = this.setViewMarker
-        const getMarker = this.getNewMarker
-        this.removeMarkers()
-
-        for (let i = 0; i < len; i++) {
-          const data = res.data[i]
-          // console.log('name : ' + data.locationName)
-          const position = new window.kakao.maps.LatLng(data.positionX, data.positionY)
-          const marker = getMarker(position)
-
-          marker.setVisible(false)
-          setViewMarker(marker)
-          markers.push(marker)
+    getCovidStatus: function () {
+      axios.get('http://127.0.0.1:7777/craw/status').then(res => {
+        if (res.status === 200) {
+          this.covidStatus = res.data
         }
       }).catch(err => {
         console.log(err)
       })
     },
-    setViewMarker: function (marker) {
-      const center = this.circle.getPosition()
-      const radius = this.circle.getRadius()
-      const line = new window.kakao.maps.Polyline()
-      const path = [marker.getPosition(), center]
-      line.setPath(path)
-
-      const dist = line.getLength()
-      // console.log('radius : ' + radius)
-      // console.log('dist : ' + dist)
-
-      if (dist <= radius) {
-        marker.setVisible(true)
-      } else {
-        marker.setVisible(false)
-      }
+    getCovidMarkers: function () {
+      axios.get('http://127.0.0.1:7777/craw/markers').then(res => {
+        if (res.status === 200) {
+          this.covidMarkers = res.data
+          this.firstInitMap(res.data[0].positionX, res.data[0].positionY)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
-    changeRadius: function () {
-      const len = this.markers.length
-      this.circle.setRadius(this.selectItem)
+    firstInitMap: (x, y) => {
+      window.kakao.maps.load(function () {
+        const mapContainer = document.getElementById('map')
+        const position = new window.kakao.maps.LatLng(x, y)
 
-      for (let i = 0; i < len; i++) {
-        const marker = this.markers[i]
-        this.setViewMarker(marker)
-      }
-    },
-    setCenterMarkerPosition: function (position) {
-      this.centerMarker.setPosition(position)
-    },
-    setCirclePosition: function (position) {
-      this.circle.setPosition(position)
-    },
-    searchPlace: function () {
-      if (this.searchText.trim() !== '') {
-        this.removeMarkers()
-        const places = new window.kakao.maps.services.Places()
-        const map = this.map
+        const mapOption = {
+          center: position,
+          level: 3
+        }
 
-        const setMarker = this.setMarker
-        const setCenterMarkerPosition = this.setCenterMarkerPosition
-        const setCirclePosition = this.setCirclePosition
-        const getLoginId = this.getLoginId
+        const map = new window.kakao.maps.Map(mapContainer, mapOption)
+        window.map = map
 
-        const store = this.$store
-
-        places.keywordSearch(this.searchText, function (result, status) {
-          if (status === window.kakao.maps.services.Status.OK) {
-            // console.log(result)
-
-            const len = result.length
-            let type = null
-            let x = -1
-            let y = -1
-
-            for (let i = 0; i < len; i++) {
-              const address = result[i].road_address_name
-
-              if (address.split(' ')[0] === ('서울')) {
-                type = address.split(' ')[1]
-                x = result[i].y
-                y = result[i].x
-                break
-              }
-            }
-
-            if (type === null) {
-              alert('검색범위는 서울내로 한정합니다')
-            } else {
-              const position = new window.kakao.maps.LatLng(x, y)
-              map.panTo(position)
-
-              setCenterMarkerPosition(position)
-              setCirclePosition(position)
-              setMarker(type)
-
-              const id = getLoginId
-              if (id != null) {
-                store.commit(SET_LOGIN_LOACTION_XY, { x: x, y: y })
-                axios.put(`http://kainTime.iptime.org:7777/member/coordinate/${id}`, { x: x, y: y }).then(res => {
-                  if (res.status === 200) {
-                    console.log(res)
-                  }
-                }).catch(err => {
-                  console.log(err)
-                })
-              }
-            }
-          }
+        const marker = new window.kakao.maps.Marker({
+          position: position
         })
+
+        marker.setMap(map)
+        window.center = marker
+      })
+    },
+
+    updateMarker: function (index) {
+      console.log('is event')
+      if (window.map !== null) {
+        window.center.setMap(null)
+
+        const x = this.covidMarkers[index].positionX
+        const y = this.covidMarkers[index].positionY
+
+        const position = new window.kakao.maps.LatLng(x, y)
+        const marker = new window.kakao.maps.Marker({
+          position: position
+        })
+
+        marker.setMap(window.map)
+        window.center = marker
+        window.map.setCenter(position)
+        this.current = index
+      }
+    },
+    checkContainsStr: function (str) {
+      if (str.includes('+')) {
+        return 'red-text'
       } else {
-        alert('찾으려는 장소를 입력하세요')
+        return 'blue-text'
+      }
+    },
+    checkCurrentIndex: function (index) {
+      if (this.current === index) {
+        return 'select-item'
+      } else {
+        return ''
       }
     }
   },
   mounted: function () {
-    if (!window.kakao || !window.kakao.maps) {
-      this.initScript()
-    } else {
-      this.initMap()
-    }
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.src = '//dapi.kakao.com/v2/maps/sdk.js?appkey=27182d803bc31145e52687dda5546c30&autoload=false&libraries=services'
+    // script.src = '//dapi.kakao.com/v2/maps/sdk.js?appkey=27182d803bc31145e52687dda5546c30&libraries=services'
+    document.head.append(script)
+    this.getCovidStatus()
+    this.getCovidMarkers()
   }
 }
 </script>
 <style>
-#selectDiv {
-  width: 80px;
-  height: 32px;
-}
-#searchDiv {
-  width: 250px;
-  height: 32px;
-}
-#searchBtnDiv {
-  width: 50px;
-  height: 32px;
-}
+  .status-data {
+    display: inline-block;
+  }
+
+  .status-data > p {
+    margin-bottom: 5px;
+  }
+
+  .marker-data {
+    width: 100%;
+    height: 100px;
+  }
+
+  .red-text {
+    color: red;
+  }
+
+  .blue-text {
+    color: blue;
+  }
+
+  .place-width {
+    width: 30%;
+    text-align: center;
+    display: inline-block;
+  }
+
+  .icon-width {
+    width: 10%;
+    text-align: center;
+    display: inline-block;
+  }
+
+  .select-item {
+    background: lightskyblue;
+  }
 </style>

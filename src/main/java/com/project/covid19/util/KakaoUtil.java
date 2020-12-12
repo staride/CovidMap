@@ -44,10 +44,7 @@ public class KakaoUtil {
 
                     if(city.contains("서울")){
                         marker.setAddress(address);
-                        marker.setAddrDepOne(city);
                         int nextindex = address.indexOf(" ", index+1);
-                        marker.setAddrDepTwo(address.substring(index, nextindex).trim());
-                        marker.setAddrDepThree(address.substring(nextindex+1, address.length()));
                         marker.setPositionX((String)data.get("y"));
                         marker.setPositionY((String)data.get("x"));
                         break;

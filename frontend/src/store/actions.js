@@ -15,12 +15,12 @@ export default {
     // console.log('id : ' + data.id)
     // console.log('password : ' + data.password)
 
-    axios.post('http://kainTime.iptime.org:7777/api/authenticate', data).then(res => {
+    axios.post('http://127.0.0.1:7777/api/authenticate', data).then(res => {
       if (res.status === 200) {
         const tokens = res.data.jwt
         // console.log('tokens : ' + tokens)
         commit(SET_AUTH_TOKENS, tokens)
-        axios.get(`http://kainTime.iptime.org:7777/member/getLoginInfo/${data.id}`).then(res => {
+        axios.get(`http://127.0.0.1:7777/member/getLoginInfo/${data.id}`).then(res => {
           if (res.status === 200 && res.data !== null) {
             commit(SET_LOGIN_INFO, res.data)
             // alert('로그인 성공')
@@ -47,14 +47,14 @@ export default {
     commit(DESTROY_LOGIN_INFO)
   },
   getBoardListAction: function ({ commit }) {
-    axios.get('http://kainTime.iptime.org:7777/board').then(res => {
+    axios.get('http://127.0.0.1:7777/board').then(res => {
       commit(SET_BOARD_LIST, res.data)
     }).catch(err => {
       console.log(err)
     })
   },
   getBoardAction: function ({ commit }, boardNo) {
-    axios.get(`http://kainTime.iptime.org:7777/board/${boardNo}`).then(res => {
+    axios.get(`http://127.0.0.1:7777/board/${boardNo}`).then(res => {
       if (res.status === 200) {
         commit(SET_BOARD, res.data)
       } else {
