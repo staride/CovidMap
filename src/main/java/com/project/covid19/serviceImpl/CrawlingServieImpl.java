@@ -41,7 +41,7 @@ public class CrawlingServieImpl implements CrawlingService {
                 String data = tds.get(2).getText();
 
                 if(!data.contains("소재")){
-                    String address = data.substring(data.indexOf("서울특별시"), data.lastIndexOf(")"));
+                    String address = data.substring(data.indexOf("(")+1, data.lastIndexOf(")"));
                     if(address.matches(".*\\d.*")){
                         Marker marker = new Marker();
 
@@ -53,7 +53,9 @@ public class CrawlingServieImpl implements CrawlingService {
 
                         KakaoUtil.searchUseAddress(marker);
 
-                        result.add(marker);
+                        if(marker.getPositionX() != null && marker.getPositionY() != null){
+                            result.add(marker);
+                        }
                     }
                 }
             }
